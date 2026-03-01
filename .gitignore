@@ -11,6 +11,7 @@ __pycache__/
 
 # Mac
 .DS_Store
+._*              # AppleDouble，Mac 压缩/解压产生的元数据文件
 
 # Build and Environments
 .condaenv
@@ -45,6 +46,12 @@ dmypy.json
 # Logs and checkpoints
 # logs/          # 不忽略 logs/，以便保留 .out .err 等
 # lightning_logs/
+# 仅忽略 2025-03-01 及以后的日期文件夹（格式 YYYY-MM-DD）
+logs/2025-03-*/
+logs/2025-0[4-9]-*/
+logs/2025-1[0-2]-*/
+logs/202[6-9]-*/
+logs/203*-*/
 models/          # 忽略 checkpoint 目录
 *.ckpt           # 忽略所有 .ckpt 文件（若不在 models/ 下）
 
