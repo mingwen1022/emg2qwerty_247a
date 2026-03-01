@@ -169,6 +169,58 @@ class MultiBandRotationInvariantMLP(nn.Module):
         return torch.stack(outputs_per_band, dim=self.stack_dim)
 
 
+class VanillaRNNEncoder(nn.Module):
+    """A vanilla RNN encoder over time for input tensors of shape (T, N, C).
+
+    Args:
+        input_size (int): Input feature size C.
+        hidden_size (int): Hidden size per direction.
+        num_layers (int): Number of stacked RNN layers.
+        bidirectional (bool): Whether to use a bidirectional RNN.
+        nonlinearity (str): RNN nonlinearity, "tanh" or "relu".
+        dropout (float): Dropout between RNN layers. Ignored when num_layers=1.
+    """
+
+    def __init__(
+        self,
+        input_size: int,
+        hidden_size: int,
+        num_layers: int,
+        bidirectional: bool,
+        nonlinearity: str = "tanh",
+        dropout: float = 0.0,
+    ) -> None:
+        super().__init__()
+        if nonlinearity not in {"tanh", "relu"}:
+            raise ValueError(
+                f"Unsupported nonlinearity: {nonlinearity}. Use 'tanh' or 'relu'."
+            )
+        if num_layers < 1:
+            raise ValueError(f"num_layers must be >= 1, got {num_layers}.")
+        if dropout < 0.0:
+            raise ValueError(f"dropout must be >= 0.0, got {dropout}.")
+
+        self.hidden_size = hidden_size
+        self.bidirectional = bidirectional
+        rnn_dropout = 0.0 if num_layers == 1 else dropout
+        self.rnn = nn.RNN(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            nonlinearity=nonlinearity,
+            bidirectional=bidirectional,
+            dropout=rnn_dropout,
+        )
+
+    @property
+    def output_size(self) -> int:
+        return self.hidden_size * (2 if self.bidirectional else 1)
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        outputs, _ = self.rnn(inputs)
+        return outputs
+
+
 class TDSConv2dBlock(nn.Module):
     """A 2D temporal convolution block as per "Sequence-to-Sequence Speech
     Recognition with Time-Depth Separable Convolutions, Hannun et al"

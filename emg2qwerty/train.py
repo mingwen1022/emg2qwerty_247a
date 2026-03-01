@@ -53,6 +53,13 @@ def main(config: DictConfig):
     def _build_transform(configs: Sequence[DictConfig]) -> Transform[Any, Any]:
         return transforms.Compose([instantiate(cfg) for cfg in configs])
 
+    # Helper to build module kwargs for load_from_checkpoint
+    def _module_kwargs(module_cfg: DictConfig) -> dict[str, Any]:
+        kwargs = OmegaConf.to_container(module_cfg, resolve=True)
+        assert isinstance(kwargs, dict)
+        kwargs.pop("_target_", None)
+        return kwargs
+
     # Instantiate LightningModule
     log.info(f"Instantiating LightningModule {config.module}")
     module = instantiate(
@@ -69,6 +76,7 @@ def main(config: DictConfig):
             optimizer=config.optimizer,
             lr_scheduler=config.lr_scheduler,
             decoder=config.decoder,
+            **_module_kwargs(config.module),
         )
 
     # Instantiate LightningDataModule
@@ -108,7 +116,11 @@ def main(config: DictConfig):
 
         # Load best checkpoint
         module = module.load_from_checkpoint(
-            trainer.checkpoint_callback.best_model_path
+            trainer.checkpoint_callback.best_model_path,
+            optimizer=config.optimizer,
+            lr_scheduler=config.lr_scheduler,
+            decoder=config.decoder,
+            **_module_kwargs(config.module),
         )
 
     # Validate and test on the best checkpoint (if training), or on the
