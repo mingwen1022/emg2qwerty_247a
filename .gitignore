@@ -43,8 +43,10 @@ dmypy.json
 .hypothesis
 
 # Logs and checkpoints
-logs/
-lightning_logs/
+# logs/          # 不忽略 logs/，以便保留 .out .err 等
+# lightning_logs/
+models/          # 忽略 checkpoint 目录
+*.ckpt           # 忽略所有 .ckpt 文件（若不在 models/ 下）
 
 # Data
 data
