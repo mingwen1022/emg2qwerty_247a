@@ -292,6 +292,22 @@ class TDSFullyConnectedBlock(nn.Module):
         return self.layer_norm(x)  # TNC
 
 
+class TwoLayerFCBlock(nn.Module):
+    """Two-layer FC with residual and LayerNorm (TDS-style)."""
+
+    def __init__(self, dim: int) -> None:
+        super().__init__()
+        self.fc = nn.Sequential(
+            nn.Linear(dim, dim),
+            nn.ReLU(),
+            nn.Linear(dim, dim),
+        )
+        self.norm = nn.LayerNorm(dim)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.norm(x + self.fc(x))
+
+
 class TDSConvEncoder(nn.Module):
     """A time depth-separable convolutional encoder composing a sequence
     of `TDSConv2dBlock` and `TDSFullyConnectedBlock` as per

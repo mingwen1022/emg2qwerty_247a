@@ -25,6 +25,8 @@ from emg2qwerty.modules import (
     MultiBandRotationInvariantMLP,
     SpectrogramNorm,
     TDSConvEncoder,
+    TDSFullyConnectedBlock,
+    TwoLayerFCBlock,
     VanillaRNNEncoder,
 )
 from emg2qwerty.transforms import Transform
@@ -322,6 +324,7 @@ class RNNCTCModule(pl.LightningModule):
             dropout=rnn_dropout,
         )
         self.classifier = nn.Sequential(
+            TwoLayerFCBlock(self.encoder.output_size),
             nn.Linear(self.encoder.output_size, charset().num_classes),
             nn.LogSoftmax(dim=-1),
         )
@@ -464,6 +467,7 @@ class CRNNCTCModule(pl.LightningModule):
             dropout=rnn_dropout,
         )
         self.classifier = nn.Sequential(
+            TDSFullyConnectedBlock(self.rnn_encoder.output_size),
             nn.Linear(self.rnn_encoder.output_size, charset().num_classes),
             nn.LogSoftmax(dim=-1),
         )

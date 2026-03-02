@@ -4,12 +4,12 @@ module:
   in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16
   mlp_features: [384]
   cnn_block_channels: [24, 24]
-  cnn_kernel_width: 9  # Temporal shrinkage: 2 * (kernel_width - 1) = 16
+  cnn_kernel_width: 32  # Temporal shrinkage: 2 * (kernel_width - 1) = 16
   rnn_hidden_size: 512
   rnn_num_layers: 3
   rnn_bidirectional: true
   rnn_nonlinearity: tanh
-  rnn_dropout: 0.10
+  rnn_dropout: 0.0
 
 datamodule:
   _target_: emg2qwerty.lightning.WindowedEMGDataModule

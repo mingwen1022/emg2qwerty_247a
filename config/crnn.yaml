@@ -4,6 +4,7 @@ defaults:
   - model: crnn_ctc
   - optimizer: adam
   - lr_scheduler: linear_warmup_cosine_annealing
+  # - lr_scheduler: reduce_on_plateau
   - decoder: ctc_greedy
   - cluster: local
   - _self_
@@ -17,10 +18,10 @@ monitor_metric: val/CER
 monitor_mode: min
 
 trainer:
-  accelerator: cpu
+  accelerator: gpu
   devices: 1
   num_nodes: 1
-  max_epochs: 1
+  max_epochs: 150
   default_root_dir: ${hydra:runtime.output_dir}
   # limit_train_batches: 1
   # limit_val_batches: 1
