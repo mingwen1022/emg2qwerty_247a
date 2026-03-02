@@ -17,10 +17,10 @@ monitor_metric: val/CER
 monitor_mode: min
 
 trainer:
-  accelerator: mps
+  accelerator: cpu
   devices: 1
   num_nodes: 1
-  max_epochs: 5
+  max_epochs: 40
   default_root_dir: ${hydra:runtime.output_dir}
   # limit_train_batches: 1
   # limit_val_batches: 1
