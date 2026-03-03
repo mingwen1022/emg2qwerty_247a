@@ -46,10 +46,12 @@ class WindowedEMGDataModule(pl.LightningDataModule):
         train_transform: Transform[np.ndarray, torch.Tensor],
         val_transform: Transform[np.ndarray, torch.Tensor],
         test_transform: Transform[np.ndarray, torch.Tensor],
+        stride: int | None = None,
     ) -> None:
         super().__init__()
 
         self.window_length = window_length
+        self.stride = stride
         self.padding = padding
 
         self.batch_size = batch_size
@@ -70,6 +72,7 @@ class WindowedEMGDataModule(pl.LightningDataModule):
                     hdf5_path,
                     transform=self.train_transform,
                     window_length=self.window_length,
+                    stride=self.stride,
                     padding=self.padding,
                     jitter=True,
                 )
@@ -82,6 +85,7 @@ class WindowedEMGDataModule(pl.LightningDataModule):
                     hdf5_path,
                     transform=self.val_transform,
                     window_length=self.window_length,
+                    stride=self.stride,
                     padding=self.padding,
                     jitter=False,
                 )
