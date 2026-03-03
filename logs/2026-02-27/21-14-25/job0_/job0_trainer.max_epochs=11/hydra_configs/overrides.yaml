@@ -1,0 +1,2 @@
+- cluster=local
+- trainer.max_epochs=11
