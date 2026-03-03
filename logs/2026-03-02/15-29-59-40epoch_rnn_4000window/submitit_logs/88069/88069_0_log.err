@@ -39,3 +39,36 @@ Epoch 4, global step 1200: 'val/CER' reached 94.48383 (best 94.48383), saving mo
 Epoch 5, global step 1440: 'val/CER' reached 85.51174 (best 85.51174), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=5-step=1440.ckpt' as top 1
 Epoch 6, global step 1680: 'val/CER' reached 82.10014 (best 82.10014), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=6-step=1680.ckpt' as top 1
 Epoch 7, global step 1920: 'val/CER' reached 73.61542 (best 73.61542), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=7-step=1920.ckpt' as top 1
+Epoch 8, global step 2160: 'val/CER' reached 67.85556 (best 67.85556), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=8-step=2160.ckpt' as top 1
+Epoch 9, global step 2400: 'val/CER' reached 67.72264 (best 67.72264), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=9-step=2400.ckpt' as top 1
+Epoch 10, global step 2640: 'val/CER' was not in top 1
+Epoch 11, global step 2880: 'val/CER' reached 66.81435 (best 66.81435), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=11-step=2880.ckpt' as top 1
+Epoch 12, global step 3120: 'val/CER' reached 63.57998 (best 63.57998), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=12-step=3120.ckpt' as top 1
+Epoch 13, global step 3360: 'val/CER' was not in top 1
+Epoch 14, global step 3600: 'val/CER' was not in top 1
+Epoch 15, global step 3840: 'val/CER' was not in top 1
+Epoch 16, global step 4080: 'val/CER' reached 63.26983 (best 63.26983), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=16-step=4080.ckpt' as top 1
+Epoch 17, global step 4320: 'val/CER' was not in top 1
+Epoch 18, global step 4560: 'val/CER' was not in top 1
+Epoch 19, global step 4800: 'val/CER' was not in top 1
+Epoch 20, global step 5040: 'val/CER' was not in top 1
+Epoch 21, global step 5280: 'val/CER' reached 62.49446 (best 62.49446), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=21-step=5280.ckpt' as top 1
+Epoch 22, global step 5520: 'val/CER' was not in top 1
+Epoch 23, global step 5760: 'val/CER' was not in top 1
+Epoch 24, global step 6000: 'val/CER' was not in top 1
+Epoch 25, global step 6240: 'val/CER' reached 62.18431 (best 62.18431), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=25-step=6240.ckpt' as top 1
+Epoch 26, global step 6480: 'val/CER' reached 59.45946 (best 59.45946), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=26-step=6480.ckpt' as top 1
+Epoch 27, global step 6720: 'val/CER' was not in top 1
+Epoch 28, global step 6960: 'val/CER' reached 56.09216 (best 56.09216), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=28-step=6960.ckpt' as top 1
+Epoch 29, global step 7200: 'val/CER' reached 52.32610 (best 52.32610), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=29-step=7200.ckpt' as top 1
+Epoch 30, global step 7440: 'val/CER' was not in top 1
+Epoch 31, global step 7680: 'val/CER' reached 48.44927 (best 48.44927), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=31-step=7680.ckpt' as top 1
+Epoch 32, global step 7920: 'val/CER' was not in top 1
+Epoch 33, global step 8160: 'val/CER' was not in top 1
+Epoch 34, global step 8400: 'val/CER' was not in top 1
+Epoch 35, global step 8640: 'val/CER' reached 46.58839 (best 46.58839), saving model to '/Users/ming/project/ece247_finalproject/emg2qwerty/logs/2026-03-02/15-29-59/job0_/checkpoints/epoch=35-step=8640.ckpt' as top 1
+Epoch 36, global step 8880: 'val/CER' was not in top 1
+Epoch 37, global step 9120: 'val/CER' was not in top 1
+Epoch 38, global step 9360: 'val/CER' was not in top 1
+Epoch 39, global step 9600: 'val/CER' was not in top 1
+`Trainer.fit` stopped: `max_epochs=40` reached.

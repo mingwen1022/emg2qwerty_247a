@@ -221,6 +221,51 @@ class VanillaRNNEncoder(nn.Module):
         return outputs
 
 
+class GRUEncoder(nn.Module):
+    """A GRU encoder over time for input tensors of shape (T, N, C).
+
+    Args:
+        input_size (int): Input feature size C.
+        hidden_size (int): Hidden size per direction.
+        num_layers (int): Number of stacked GRU layers.
+        bidirectional (bool): Whether to use a bidirectional GRU.
+        dropout (float): Dropout between GRU layers. Ignored when num_layers=1.
+    """
+
+    def __init__(
+        self,
+        input_size: int,
+        hidden_size: int,
+        num_layers: int,
+        bidirectional: bool,
+        dropout: float = 0.0,
+    ) -> None:
+        super().__init__()
+        if num_layers < 1:
+            raise ValueError(f"num_layers must be >= 1, got {num_layers}.")
+        if dropout < 0.0:
+            raise ValueError(f"dropout must be >= 0.0, got {dropout}.")
+
+        self.hidden_size = hidden_size
+        self.bidirectional = bidirectional
+        gru_dropout = 0.0 if num_layers == 1 else dropout
+        self.gru = nn.GRU(
+            input_size=input_size,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            bidirectional=bidirectional,
+            dropout=gru_dropout,
+        )
+
+    @property
+    def output_size(self) -> int:
+        return self.hidden_size * (2 if self.bidirectional else 1)
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        outputs, _ = self.gru(inputs)
+        return outputs
+
+
 class TDSConv2dBlock(nn.Module):
     """A 2D temporal convolution block as per "Sequence-to-Sequence Speech
     Recognition with Time-Depth Separable Convolutions, Hannun et al"
