@@ -1,0 +1,17 @@
+module:
+  _target_: emg2qwerty.lightning_gru_ctc.GRUCTCModule
+  in_features: 528
+  hidden_size: 384
+  num_layers: 2
+  bidirectional: True
+  dropout: 0.0
+  fc_features: [384, 384]
+
+  # IMPORTANT:
+  # If the GRU module throws "Could not infer num_classes", set this explicitly.
+  # num_classes: <PUT_THE_VOCAB_SIZE_HERE>
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
