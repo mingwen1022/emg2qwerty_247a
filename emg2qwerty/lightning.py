@@ -777,7 +777,7 @@ class CGRUCTCModule(pl.LightningModule):
             dropout=gru_dropout,
         )
         self.classifier = nn.Sequential(
-            TDSFullyConnectedBlock(self.gru_encoder.output_size),
+            # TDSFullyConnectedBlock(self.gru_encoder.output_size),
             nn.Linear(self.gru_encoder.output_size, charset().num_classes),
             nn.LogSoftmax(dim=-1),
         )
