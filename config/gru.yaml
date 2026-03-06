@@ -20,12 +20,12 @@ trainer:
   accelerator: gpu
   devices: 1
   num_nodes: 1
-  max_epochs: 120
+  max_epochs: 40
   default_root_dir: ${hydra:runtime.output_dir}
   # limit_train_batches: 1
   # limit_val_batches: 1
   logger: True
-  # gradient_clip_val: 1.0
+  gradient_clip_val: 1.0
   # gradient_clip_algorithm: norm
 
 

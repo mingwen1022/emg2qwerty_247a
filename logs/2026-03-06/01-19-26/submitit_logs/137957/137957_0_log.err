@@ -1,0 +1,75 @@
+Global seed set to 1501
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Missing logger folder: /home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/lightning_logs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/__init__.py:11: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
+  if not hasattr(numpy, tp_name):
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/__init__.py:11: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  if not hasattr(numpy, tp_name):
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/models/self_supervised/amdim/amdim_module.py:34: UnderReviewWarning: The feature generate_power_seq is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  "lr_options": generate_power_seq(LEARNING_RATE_CIFAR, 11),
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/models/self_supervised/amdim/amdim_module.py:92: UnderReviewWarning: The feature FeatureMapContrastiveTask is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  contrastive_task: Union[FeatureMapContrastiveTask] = FeatureMapContrastiveTask("01, 02, 11"),
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/losses/self_supervised_learning.py:228: UnderReviewWarning: The feature AmdimNCELoss is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  self.nce_loss = AmdimNCELoss(tclip)
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py:92: UnderReviewWarning: The feature LinearWarmupCosineAnnealingLR is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  return _target_(*args, **kwargs)
+
+  | Name       | Type       | Params
+------------------------------------------
+0 | frontend   | Sequential | 406 K 
+1 | encoder    | GRUEncoder | 2.7 M 
+2 | classifier | Sequential | 76.1 K
+3 | ctc_loss   | CTCLoss    | 0     
+4 | metrics    | ModuleDict | 0     
+------------------------------------------
+3.1 M     Trainable params
+0         Non-trainable params
+3.1 M     Total params
+12.565    Total estimated model params size (MB)
+Epoch 0, global step 160: 'val/CER' reached 301.66241 (best 301.66241), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=0-step=160.ckpt' as top 1
+Epoch 1, global step 320: 'val/CER' reached 100.00000 (best 100.00000), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=1-step=320.ckpt' as top 1
+Epoch 2, global step 480: 'val/CER' was not in top 1
+Epoch 3, global step 640: 'val/CER' was not in top 1
+Epoch 4, global step 800: 'val/CER' reached 99.82268 (best 99.82268), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=4-step=800.ckpt' as top 1
+Epoch 5, global step 960: 'val/CER' reached 98.49274 (best 98.49274), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=5-step=960.ckpt' as top 1
+Epoch 6, global step 1120: 'val/CER' reached 94.79109 (best 94.79109), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=6-step=1120.ckpt' as top 1
+Epoch 7, global step 1280: 'val/CER' reached 78.77646 (best 78.77646), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=7-step=1280.ckpt' as top 1
+Epoch 8, global step 1440: 'val/CER' reached 62.29635 (best 62.29635), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=8-step=1440.ckpt' as top 1
+Epoch 9, global step 1600: 'val/CER' reached 51.70121 (best 51.70121), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=9-step=1600.ckpt' as top 1
+Epoch 10, global step 1760: 'val/CER' reached 42.89039 (best 42.89039), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=10-step=1760.ckpt' as top 1
+Epoch 11, global step 1920: 'val/CER' reached 39.79829 (best 39.79829), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=11-step=1920.ckpt' as top 1
+Epoch 12, global step 2080: 'val/CER' reached 37.23817 (best 37.23817), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=12-step=2080.ckpt' as top 1
+Epoch 13, global step 2240: 'val/CER' reached 36.27397 (best 36.27397), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=13-step=2240.ckpt' as top 1
+Epoch 14, global step 2400: 'val/CER' reached 32.11792 (best 32.11792), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=14-step=2400.ckpt' as top 1
+Epoch 15, global step 2560: 'val/CER' reached 31.91843 (best 31.91843), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=15-step=2560.ckpt' as top 1
+Epoch 16, global step 2720: 'val/CER' reached 30.20060 (best 30.20060), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=16-step=2720.ckpt' as top 1
+Epoch 17, global step 2880: 'val/CER' was not in top 1
+Epoch 18, global step 3040: 'val/CER' reached 28.70442 (best 28.70442), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=18-step=3040.ckpt' as top 1
+Epoch 19, global step 3200: 'val/CER' reached 27.93971 (best 27.93971), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=19-step=3200.ckpt' as top 1
+Epoch 20, global step 3360: 'val/CER' reached 27.05309 (best 27.05309), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=20-step=3360.ckpt' as top 1
+Epoch 21, global step 3520: 'val/CER' reached 26.59869 (best 26.59869), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=21-step=3520.ckpt' as top 1
+Epoch 22, global step 3680: 'val/CER' reached 25.20226 (best 25.20226), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=22-step=3680.ckpt' as top 1
+Epoch 23, global step 3840: 'val/CER' reached 24.35997 (best 24.35997), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=23-step=3840.ckpt' as top 1
+Epoch 24, global step 4000: 'val/CER' was not in top 1
+Epoch 25, global step 4160: 'val/CER' reached 24.24914 (best 24.24914), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=25-step=4160.ckpt' as top 1
+Epoch 26, global step 4320: 'val/CER' reached 23.61742 (best 23.61742), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=26-step=4320.ckpt' as top 1
+Epoch 27, global step 4480: 'val/CER' reached 22.81946 (best 22.81946), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=27-step=4480.ckpt' as top 1
+Epoch 28, global step 4640: 'val/CER' was not in top 1
+Epoch 29, global step 4800: 'val/CER' reached 22.33182 (best 22.33182), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=29-step=4800.ckpt' as top 1
+Epoch 30, global step 4960: 'val/CER' reached 21.68902 (best 21.68902), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=30-step=4960.ckpt' as top 1
+Epoch 31, global step 5120: 'val/CER' was not in top 1
+Epoch 32, global step 5280: 'val/CER' was not in top 1
+Epoch 33, global step 5440: 'val/CER' reached 21.50061 (best 21.50061), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=33-step=5440.ckpt' as top 1
+Epoch 34, global step 5600: 'val/CER' reached 20.96864 (best 20.96864), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=34-step=5600.ckpt' as top 1
+Epoch 35, global step 5760: 'val/CER' was not in top 1
+Epoch 36, global step 5920: 'val/CER' reached 20.82456 (best 20.82456), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=36-step=5920.ckpt' as top 1
+Epoch 37, global step 6080: 'val/CER' reached 20.74698 (best 20.74698), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=37-step=6080.ckpt' as top 1
+Epoch 38, global step 6240: 'val/CER' reached 20.59182 (best 20.59182), saving model to '/home/ming/emg2qwerty/logs/2026-03-06/01-19-26/job0_/checkpoints/epoch=38-step=6240.ckpt' as top 1
+Epoch 39, global step 6400: 'val/CER' was not in top 1
+`Trainer.fit` stopped: `max_epochs=40` reached.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]

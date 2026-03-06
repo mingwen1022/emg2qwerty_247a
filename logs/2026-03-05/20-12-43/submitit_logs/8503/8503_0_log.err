@@ -1,0 +1,185 @@
+Global seed set to 1501
+GPU available: True (cuda), used: True
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Missing logger folder: /home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/lightning_logs
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/__init__.py:11: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
+  if not hasattr(numpy, tp_name):
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/__init__.py:11: FutureWarning: In the future `np.bool` will be defined as the corresponding NumPy scalar.
+  if not hasattr(numpy, tp_name):
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/models/self_supervised/amdim/amdim_module.py:34: UnderReviewWarning: The feature generate_power_seq is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  "lr_options": generate_power_seq(LEARNING_RATE_CIFAR, 11),
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/models/self_supervised/amdim/amdim_module.py:92: UnderReviewWarning: The feature FeatureMapContrastiveTask is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  contrastive_task: Union[FeatureMapContrastiveTask] = FeatureMapContrastiveTask("01, 02, 11"),
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/pl_bolts/losses/self_supervised_learning.py:228: UnderReviewWarning: The feature AmdimNCELoss is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  self.nce_loss = AmdimNCELoss(tclip)
+/opt/conda/envs/emg2qwerty/lib/python3.10/site-packages/hydra/_internal/instantiate/_instantiate2.py:92: UnderReviewWarning: The feature LinearWarmupCosineAnnealingLR is currently marked under review. The compatibility with other Lightning projects is not guaranteed and API may change at any time. The API and functionality may change without warning in future releases. More details: https://lightning-bolts.readthedocs.io/en/latest/stability.html
+  return _target_(*args, **kwargs)
+
+  | Name       | Type       | Params
+------------------------------------------
+0 | frontend   | Sequential | 406 K 
+1 | encoder    | GRUEncoder | 5.3 M 
+2 | classifier | Sequential | 1.3 M 
+3 | ctc_loss   | CTCLoss    | 0     
+4 | metrics    | ModuleDict | 0     
+------------------------------------------
+7.0 M     Trainable params
+0         Non-trainable params
+7.0 M     Total params
+27.931    Total estimated model params size (MB)
+Epoch 0, global step 480: 'val/CER' reached 315.76266 (best 315.76266), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=0-step=480.ckpt' as top 1
+Epoch 1, global step 960: 'val/CER' reached 100.00000 (best 100.00000), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=1-step=960.ckpt' as top 1
+Epoch 2, global step 1440: 'val/CER' was not in top 1
+Epoch 3, global step 1920: 'val/CER' reached 95.05202 (best 95.05202), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=3-step=1920.ckpt' as top 1
+Epoch 4, global step 2400: 'val/CER' reached 54.53841 (best 54.53841), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=4-step=2400.ckpt' as top 1
+Epoch 5, global step 2880: 'val/CER' reached 44.93026 (best 44.93026), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=5-step=2880.ckpt' as top 1
+Epoch 6, global step 3360: 'val/CER' reached 38.00089 (best 38.00089), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=6-step=3360.ckpt' as top 1
+Epoch 7, global step 3840: 'val/CER' reached 33.34071 (best 33.34071), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=7-step=3840.ckpt' as top 1
+Epoch 8, global step 4320: 'val/CER' reached 31.33717 (best 31.33717), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=8-step=4320.ckpt' as top 1
+Epoch 9, global step 4800: 'val/CER' reached 27.03122 (best 27.03122), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=9-step=4800.ckpt' as top 1
+Epoch 10, global step 5280: 'val/CER' was not in top 1
+Epoch 11, global step 5760: 'val/CER' reached 26.93159 (best 26.93159), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=11-step=5760.ckpt' as top 1
+Epoch 12, global step 6240: 'val/CER' reached 24.16427 (best 24.16427), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=12-step=6240.ckpt' as top 1
+Epoch 13, global step 6720: 'val/CER' reached 23.10162 (best 23.10162), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=13-step=6720.ckpt' as top 1
+Epoch 14, global step 7200: 'val/CER' was not in top 1
+Epoch 15, global step 7680: 'val/CER' reached 23.00199 (best 23.00199), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=15-step=7680.ckpt' as top 1
+Epoch 16, global step 8160: 'val/CER' reached 22.72526 (best 22.72526), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=16-step=8160.ckpt' as top 1
+Epoch 17, global step 8640: 'val/CER' reached 21.62940 (best 21.62940), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=17-step=8640.ckpt' as top 1
+Epoch 18, global step 9120: 'val/CER' reached 21.08700 (best 21.08700), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=18-step=9120.ckpt' as top 1
+Epoch 19, global step 9600: 'val/CER' was not in top 1
+Epoch 20, global step 10080: 'val/CER' was not in top 1
+Epoch 21, global step 10560: 'val/CER' reached 20.97631 (best 20.97631), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=21-step=10560.ckpt' as top 1
+Epoch 22, global step 11040: 'val/CER' was not in top 1
+Epoch 23, global step 11520: 'val/CER' reached 20.02435 (best 20.02435), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=23-step=11520.ckpt' as top 1
+Epoch 24, global step 12000: 'val/CER' reached 19.55944 (best 19.55944), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=24-step=12000.ckpt' as top 1
+Epoch 25, global step 12480: 'val/CER' was not in top 1
+Epoch 26, global step 12960: 'val/CER' was not in top 1
+Epoch 27, global step 13440: 'val/CER' was not in top 1
+Epoch 28, global step 13920: 'val/CER' was not in top 1
+Epoch 29, global step 14400: 'val/CER' was not in top 1
+Epoch 30, global step 14880: 'val/CER' was not in top 1
+Epoch 31, global step 15360: 'val/CER' reached 19.29378 (best 19.29378), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=31-step=15360.ckpt' as top 1
+Epoch 32, global step 15840: 'val/CER' was not in top 1
+Epoch 33, global step 16320: 'val/CER' was not in top 1
+Epoch 34, global step 16800: 'val/CER' was not in top 1
+Epoch 35, global step 17280: 'val/CER' reached 19.23843 (best 19.23843), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=35-step=17280.ckpt' as top 1
+Epoch 36, global step 17760: 'val/CER' was not in top 1
+Epoch 37, global step 18240: 'val/CER' reached 19.11667 (best 19.11667), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=37-step=18240.ckpt' as top 1
+Epoch 38, global step 18720: 'val/CER' reached 18.29754 (best 18.29754), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=38-step=18720.ckpt' as top 1
+Epoch 39, global step 19200: 'val/CER' was not in top 1
+Epoch 40, global step 19680: 'val/CER' was not in top 1
+Epoch 41, global step 20160: 'val/CER' was not in top 1
+Epoch 42, global step 20640: 'val/CER' reached 18.13150 (best 18.13150), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=42-step=20640.ckpt' as top 1
+Epoch 43, global step 21120: 'val/CER' was not in top 1
+Epoch 44, global step 21600: 'val/CER' was not in top 1
+Epoch 45, global step 22080: 'val/CER' was not in top 1
+Epoch 46, global step 22560: 'val/CER' was not in top 1
+Epoch 47, global step 23040: 'val/CER' was not in top 1
+Epoch 48, global step 23520: 'val/CER' was not in top 1
+Epoch 49, global step 24000: 'val/CER' was not in top 1
+Epoch 50, global step 24480: 'val/CER' was not in top 1
+Epoch 51, global step 24960: 'val/CER' was not in top 1
+Epoch 52, global step 25440: 'val/CER' was not in top 1
+Epoch 53, global step 25920: 'val/CER' reached 17.81049 (best 17.81049), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=53-step=25920.ckpt' as top 1
+Epoch 54, global step 26400: 'val/CER' was not in top 1
+Epoch 55, global step 26880: 'val/CER' was not in top 1
+Epoch 56, global step 27360: 'val/CER' was not in top 1
+Epoch 57, global step 27840: 'val/CER' was not in top 1
+Epoch 58, global step 28320: 'val/CER' was not in top 1
+Epoch 59, global step 28800: 'val/CER' was not in top 1
+Epoch 60, global step 29280: 'val/CER' reached 17.69980 (best 17.69980), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=60-step=29280.ckpt' as top 1
+Epoch 61, global step 29760: 'val/CER' was not in top 1
+Epoch 62, global step 30240: 'val/CER' was not in top 1
+Epoch 63, global step 30720: 'val/CER' was not in top 1
+Epoch 64, global step 31200: 'val/CER' was not in top 1
+Epoch 65, global step 31680: 'val/CER' was not in top 1
+Epoch 66, global step 32160: 'val/CER' was not in top 1
+Epoch 67, global step 32640: 'val/CER' reached 17.50055 (best 17.50055), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=67-step=32640.ckpt' as top 1
+Epoch 68, global step 33120: 'val/CER' was not in top 1
+Epoch 69, global step 33600: 'val/CER' was not in top 1
+Epoch 70, global step 34080: 'val/CER' was not in top 1
+Epoch 71, global step 34560: 'val/CER' was not in top 1
+Epoch 72, global step 35040: 'val/CER' was not in top 1
+Epoch 73, global step 35520: 'val/CER' was not in top 1
+Epoch 74, global step 36000: 'val/CER' was not in top 1
+Epoch 75, global step 36480: 'val/CER' was not in top 1
+Epoch 76, global step 36960: 'val/CER' was not in top 1
+Epoch 77, global step 37440: 'val/CER' was not in top 1
+Epoch 78, global step 37920: 'val/CER' was not in top 1
+Epoch 79, global step 38400: 'val/CER' was not in top 1
+Epoch 80, global step 38880: 'val/CER' was not in top 1
+Epoch 81, global step 39360: 'val/CER' was not in top 1
+Epoch 82, global step 39840: 'val/CER' was not in top 1
+Epoch 83, global step 40320: 'val/CER' was not in top 1
+Epoch 84, global step 40800: 'val/CER' was not in top 1
+Epoch 85, global step 41280: 'val/CER' reached 16.91388 (best 16.91388), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=85-step=41280.ckpt' as top 1
+Epoch 86, global step 41760: 'val/CER' was not in top 1
+Epoch 87, global step 42240: 'val/CER' was not in top 1
+Epoch 88, global step 42720: 'val/CER' was not in top 1
+Epoch 89, global step 43200: 'val/CER' was not in top 1
+Epoch 90, global step 43680: 'val/CER' was not in top 1
+Epoch 91, global step 44160: 'val/CER' was not in top 1
+Epoch 92, global step 44640: 'val/CER' was not in top 1
+Epoch 93, global step 45120: 'val/CER' was not in top 1
+Epoch 94, global step 45600: 'val/CER' was not in top 1
+Epoch 95, global step 46080: 'val/CER' was not in top 1
+Epoch 96, global step 46560: 'val/CER' was not in top 1
+Epoch 97, global step 47040: 'val/CER' reached 16.89174 (best 16.89174), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=97-step=47040.ckpt' as top 1
+Epoch 98, global step 47520: 'val/CER' reached 16.55966 (best 16.55966), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=98-step=47520.ckpt' as top 1
+Epoch 99, global step 48000: 'val/CER' was not in top 1
+Epoch 100, global step 48480: 'val/CER' was not in top 1
+Epoch 101, global step 48960: 'val/CER' was not in top 1
+Epoch 102, global step 49440: 'val/CER' reached 16.38256 (best 16.38256), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=102-step=49440.ckpt' as top 1
+Epoch 103, global step 49920: 'val/CER' was not in top 1
+Epoch 104, global step 50400: 'val/CER' was not in top 1
+Epoch 105, global step 50880: 'val/CER' was not in top 1
+Epoch 106, global step 51360: 'val/CER' was not in top 1
+Epoch 107, global step 51840: 'val/CER' was not in top 1
+Epoch 108, global step 52320: 'val/CER' was not in top 1
+Epoch 109, global step 52800: 'val/CER' reached 16.23865 (best 16.23865), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=109-step=52800.ckpt' as top 1
+Epoch 110, global step 53280: 'val/CER' was not in top 1
+Epoch 111, global step 53760: 'val/CER' was not in top 1
+Epoch 112, global step 54240: 'val/CER' reached 16.22758 (best 16.22758), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=112-step=54240.ckpt' as top 1
+Epoch 113, global step 54720: 'val/CER' was not in top 1
+Epoch 114, global step 55200: 'val/CER' reached 16.18331 (best 16.18331), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=114-step=55200.ckpt' as top 1
+Epoch 115, global step 55680: 'val/CER' was not in top 1
+Epoch 116, global step 56160: 'val/CER' was not in top 1
+Epoch 117, global step 56640: 'val/CER' was not in top 1
+Epoch 118, global step 57120: 'val/CER' was not in top 1
+Epoch 119, global step 57600: 'val/CER' was not in top 1
+Epoch 120, global step 58080: 'val/CER' reached 16.15010 (best 16.15010), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=120-step=58080.ckpt' as top 1
+Epoch 121, global step 58560: 'val/CER' was not in top 1
+Epoch 122, global step 59040: 'val/CER' was not in top 1
+Epoch 123, global step 59520: 'val/CER' reached 16.13903 (best 16.13903), saving model to '/home/ming/emg2qwerty/logs/2026-03-05/20-12-43/job0_/checkpoints/epoch=123-step=59520.ckpt' as top 1
+Epoch 124, global step 60000: 'val/CER' was not in top 1
+Epoch 125, global step 60480: 'val/CER' was not in top 1
+Epoch 126, global step 60960: 'val/CER' was not in top 1
+Epoch 127, global step 61440: 'val/CER' was not in top 1
+Epoch 128, global step 61920: 'val/CER' was not in top 1
+Epoch 129, global step 62400: 'val/CER' was not in top 1
+Epoch 130, global step 62880: 'val/CER' was not in top 1
+Epoch 131, global step 63360: 'val/CER' was not in top 1
+Epoch 132, global step 63840: 'val/CER' was not in top 1
+Epoch 133, global step 64320: 'val/CER' was not in top 1
+Epoch 134, global step 64800: 'val/CER' was not in top 1
+Epoch 135, global step 65280: 'val/CER' was not in top 1
+Epoch 136, global step 65760: 'val/CER' was not in top 1
+Epoch 137, global step 66240: 'val/CER' was not in top 1
+Epoch 138, global step 66720: 'val/CER' was not in top 1
+Epoch 139, global step 67200: 'val/CER' was not in top 1
+Epoch 140, global step 67680: 'val/CER' was not in top 1
+Epoch 141, global step 68160: 'val/CER' was not in top 1
+Epoch 142, global step 68640: 'val/CER' was not in top 1
+Epoch 143, global step 69120: 'val/CER' was not in top 1
+Epoch 144, global step 69600: 'val/CER' was not in top 1
+Epoch 145, global step 70080: 'val/CER' was not in top 1
+Epoch 146, global step 70560: 'val/CER' was not in top 1
+Epoch 147, global step 71040: 'val/CER' was not in top 1
+Epoch 148, global step 71520: 'val/CER' was not in top 1
+Epoch 149, global step 72000: 'val/CER' was not in top 1
+`Trainer.fit` stopped: `max_epochs=150` reached.
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]

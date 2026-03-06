@@ -24,6 +24,7 @@ from emg2qwerty.metrics import CharacterErrorRates
 from emg2qwerty.modules import (
     GRUEncoder,
     MultiBandRotationInvariantMLP,
+    RawEMGCNNEncoder,
     SpectrogramNorm,
     TDSConvEncoder,
     TDSFullyConnectedBlock,
@@ -469,7 +470,7 @@ class GRUCTCModule(pl.LightningModule):
             dropout=gru_dropout,
         )
         self.classifier = nn.Sequential(
-            TwoLayerFCBlock(self.encoder.output_size),
+            # TwoLayerFCBlock(self.encoder.output_size),
             nn.Linear(self.encoder.output_size, charset().num_classes),
             nn.LogSoftmax(dim=-1),
         )
@@ -501,6 +502,176 @@ class GRUCTCModule(pl.LightningModule):
 
         emissions = self.forward(inputs)
         emission_lengths = input_lengths
+
+        loss = self.ctc_loss(
+            log_probs=emissions,  # (T, N, num_classes)
+            targets=targets.transpose(0, 1),  # (T, N) -> (N, T)
+            input_lengths=emission_lengths,  # (N,)
+            target_lengths=target_lengths,  # (N,)
+        )
+
+        predictions = self.decoder.decode_batch(
+            emissions=emissions.detach().cpu().numpy(),
+            emission_lengths=emission_lengths.detach().cpu().numpy(),
+        )
+
+        metrics = self.metrics[f"{phase}_metrics"]
+        targets = targets.detach().cpu().numpy()
+        target_lengths = target_lengths.detach().cpu().numpy()
+        for i in range(N):
+            target = LabelData.from_labels(targets[: target_lengths[i], i])
+            metrics.update(prediction=predictions[i], target=target)
+
+        self.log(f"{phase}/loss", loss, batch_size=N, sync_dist=True)
+        return loss
+
+    def _epoch_end(self, phase: str) -> None:
+        metrics = self.metrics[f"{phase}_metrics"]
+        self.log_dict(metrics.compute(), sync_dist=True)
+        metrics.reset()
+
+    def training_step(self, *args, **kwargs) -> torch.Tensor:
+        return self._step("train", *args, **kwargs)
+
+    def validation_step(self, *args, **kwargs) -> torch.Tensor:
+        return self._step("val", *args, **kwargs)
+
+    def test_step(self, *args, **kwargs) -> torch.Tensor:
+        return self._step("test", *args, **kwargs)
+
+    def on_train_epoch_end(self) -> None:
+        self._epoch_end("train")
+
+    def on_validation_epoch_end(self) -> None:
+        self._epoch_end("val")
+
+    def on_test_epoch_end(self) -> None:
+        self._epoch_end("test")
+
+    def configure_optimizers(self) -> dict[str, Any]:
+        return utils.instantiate_optimizer_and_scheduler(
+            self.parameters(),
+            optimizer_config=self._optimizer_config,
+            lr_scheduler_config=self._lr_scheduler_config,
+        )
+
+
+class RawCnnGruCtcModule(pl.LightningModule):
+    NUM_BANDS: ClassVar[int] = 2
+    ELECTRODE_CHANNELS: ClassVar[int] = 16
+
+    def __init__(
+        self,
+        cnn_channels: Sequence[int],
+        cnn_kernel_sizes: Sequence[int],
+        cnn_strides: Sequence[int],
+        cnn_paddings: Sequence[int] | None,
+        cnn_dilations: Sequence[int] | None,
+        cnn_use_batch_norm: bool,
+        gru_hidden_size: int,
+        gru_num_layers: int,
+        gru_bidirectional: bool,
+        gru_dropout: float,
+        optimizer: DictConfig,
+        lr_scheduler: DictConfig,
+        decoder: DictConfig,
+    ) -> None:
+        super().__init__()
+        self.save_hyperparameters(
+            ignore=[
+                "optimizer",
+                "lr_scheduler",
+                "decoder",
+                "cnn_channels",
+                "cnn_kernel_sizes",
+                "cnn_strides",
+                "cnn_paddings",
+                "cnn_dilations",
+            ]
+        )
+        self._log_hyperparams = (
+            False  # TB/tensorboardX choke on any non-scalar in hparams
+        )
+        self._optimizer_config = optimizer
+        self._lr_scheduler_config = lr_scheduler
+
+        input_channels = self.NUM_BANDS * self.ELECTRODE_CHANNELS
+        self.cnn_encoder = RawEMGCNNEncoder(
+            in_channels=input_channels,
+            channels=cnn_channels,
+            kernel_sizes=cnn_kernel_sizes,
+            strides=cnn_strides,
+            paddings=cnn_paddings,
+            dilations=cnn_dilations,
+            use_batch_norm=cnn_use_batch_norm,
+        )
+        self.gru_encoder = GRUEncoder(
+            input_size=self.cnn_encoder.output_size,
+            hidden_size=gru_hidden_size,
+            num_layers=gru_num_layers,
+            bidirectional=gru_bidirectional,
+            dropout=gru_dropout,
+        )
+        self.classifier = nn.Sequential(
+            nn.Linear(self.gru_encoder.output_size, charset().num_classes),
+            nn.LogSoftmax(dim=-1),
+        )
+
+        self.ctc_loss = nn.CTCLoss(blank=charset().null_class)
+        self.decoder = instantiate(decoder)
+
+        metrics = MetricCollection([CharacterErrorRates()])
+        self.metrics = nn.ModuleDict(
+            {
+                f"{phase}_metrics": metrics.clone(prefix=f"{phase}/")
+                for phase in ["train", "val", "test"]
+            }
+        )
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        if inputs.ndim == 4:
+            # (T, N, bands=2, channels=16) -> (T, N, C=32)
+            x = inputs.flatten(start_dim=2)
+        elif inputs.ndim == 3:
+            x = inputs
+        else:
+            raise ValueError(
+                "Expected raw inputs with shape (T, N, bands, channels) "
+                f"or (T, N, C), got {tuple(inputs.shape)}."
+            )
+        x = self.cnn_encoder(x)
+        x = self.gru_encoder(x)
+        return self.classifier(x)
+
+    def _step(
+        self, phase: str, batch: dict[str, torch.Tensor], *args, **kwargs
+    ) -> torch.Tensor:
+        inputs = batch["inputs"]
+        targets = batch["targets"]
+        input_lengths = batch["input_lengths"]
+        target_lengths = batch["target_lengths"]
+        N = len(input_lengths)  # batch_size
+
+        emissions = self.forward(inputs)
+        emission_lengths = self.cnn_encoder.output_lengths(input_lengths)
+        if torch.any(emission_lengths <= 0).item():
+            raise ValueError(
+                "emission_lengths must be > 0 after CNN downsampling. "
+                f"min_input_length={int(input_lengths.min().item())}, "
+                f"min_emission_length={int(emission_lengths.min().item())}."
+            )
+        if torch.any(emission_lengths < target_lengths).item():
+            raise ValueError(
+                "emission_lengths must be >= target_lengths for CTC. "
+                f"min_emission_length={int(emission_lengths.min().item())}, "
+                f"max_target_length={int(target_lengths.max().item())}."
+            )
+        if torch.any(emission_lengths > emissions.shape[0]).item():
+            raise ValueError(
+                "emission_lengths cannot exceed emissions timesteps. "
+                f"max_emission_length={int(emission_lengths.max().item())}, "
+                f"emissions.T={emissions.shape[0]}."
+            )
 
         loss = self.ctc_loss(
             log_probs=emissions,  # (T, N, num_classes)

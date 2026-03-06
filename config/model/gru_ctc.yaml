@@ -10,6 +10,6 @@ module:
 
 datamodule:
   _target_: emg2qwerty.lightning.WindowedEMGDataModule
-  window_length: 4000  # 4 sec windows for 2kHz EMG
-  stride: 2000  # optional; null means stride=window_length (no overlap)
+  window_length: 20000  # 4 sec windows for 2kHz EMG
+  stride: 12000  # optional; null means stride=window_length (no overlap)
   padding: [900, 200]  # 900ms past context, 100ms future context -> 450, 50

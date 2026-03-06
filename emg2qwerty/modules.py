@@ -266,6 +266,113 @@ class GRUEncoder(nn.Module):
         return outputs
 
 
+class RawEMGCNNEncoder(nn.Module):
+    """1D CNN encoder for raw EMG inputs of shape (T, N, C).
+
+    The module applies a stack of temporal Conv1d layers while preserving
+    TNC convention for the public interface.
+    """
+
+    def __init__(
+        self,
+        in_channels: int,
+        channels: Sequence[int],
+        kernel_sizes: Sequence[int],
+        strides: Sequence[int],
+        paddings: Sequence[int] | None = None,
+        dilations: Sequence[int] | None = None,
+        use_batch_norm: bool = True,
+    ) -> None:
+        super().__init__()
+        num_layers = len(channels)
+        if num_layers == 0:
+            raise ValueError("channels must contain at least one layer.")
+        if len(kernel_sizes) != num_layers:
+            raise ValueError(
+                "kernel_sizes must have the same length as channels. "
+                f"Got {len(kernel_sizes)} and {num_layers}."
+            )
+        if len(strides) != num_layers:
+            raise ValueError(
+                "strides must have the same length as channels. "
+                f"Got {len(strides)} and {num_layers}."
+            )
+
+        if paddings is None:
+            paddings = tuple(0 for _ in range(num_layers))
+        if dilations is None:
+            dilations = tuple(1 for _ in range(num_layers))
+
+        if len(paddings) != num_layers:
+            raise ValueError(
+                "paddings must have the same length as channels. "
+                f"Got {len(paddings)} and {num_layers}."
+            )
+        if len(dilations) != num_layers:
+            raise ValueError(
+                "dilations must have the same length as channels. "
+                f"Got {len(dilations)} and {num_layers}."
+            )
+
+        self.kernel_sizes = tuple(int(k) for k in kernel_sizes)
+        self.strides = tuple(int(s) for s in strides)
+        self.paddings = tuple(int(p) for p in paddings)
+        self.dilations = tuple(int(d) for d in dilations)
+
+        layers: list[nn.Module] = []
+        current_in = in_channels
+        for out_channels, kernel_size, stride, padding, dilation in zip(
+            channels,
+            self.kernel_sizes,
+            self.strides,
+            self.paddings,
+            self.dilations,
+        ):
+            if kernel_size < 1:
+                raise ValueError(f"kernel_size must be >= 1, got {kernel_size}.")
+            if stride < 1:
+                raise ValueError(f"stride must be >= 1, got {stride}.")
+            if dilation < 1:
+                raise ValueError(f"dilation must be >= 1, got {dilation}.")
+            if padding < 0:
+                raise ValueError(f"padding must be >= 0, got {padding}.")
+
+            layers.append(
+                nn.Conv1d(
+                    in_channels=current_in,
+                    out_channels=out_channels,
+                    kernel_size=kernel_size,
+                    stride=stride,
+                    padding=padding,
+                    dilation=dilation,
+                )
+            )
+            if use_batch_norm:
+                layers.append(nn.BatchNorm1d(out_channels))
+            layers.append(nn.ReLU())
+            current_in = out_channels
+        self.network = nn.Sequential(*layers)
+        self.output_size = current_in
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        x = inputs.permute(1, 2, 0)  # (T, N, C) -> (N, C, T)
+        x = self.network(x)
+        return x.permute(2, 0, 1)  # (N, C, T) -> (T, N, C)
+
+    def output_lengths(self, input_lengths: torch.Tensor) -> torch.Tensor:
+        lengths = input_lengths.clone()
+        for kernel_size, stride, padding, dilation in zip(
+            self.kernel_sizes,
+            self.strides,
+            self.paddings,
+            self.dilations,
+        ):
+            lengths = (
+                lengths + 2 * padding - dilation * (kernel_size - 1) - 1
+            ) // stride + 1
+        return lengths
+
+
 class TDSConv2dBlock(nn.Module):
     """A 2D temporal convolution block as per "Sequence-to-Sequence Speech
     Recognition with Time-Depth Separable Convolutions, Hannun et al"
