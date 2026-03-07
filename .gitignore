@@ -11,7 +11,7 @@ __pycache__/
 
 # Mac
 .DS_Store
-._*              # AppleDouble，Mac 压缩/解压产生的元数据文件
+._*              
 
 # Build and Environments
 .condaenv
@@ -52,6 +52,18 @@ logs/2025-0[12]-*/
 models/          # 忽略 checkpoint 目录
 *.ckpt           # 忽略所有 .ckpt 文件（大体积不同步）
 logs/**/checkpoints/
+!logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/
+logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/*.ckpt
+!logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/epoch34-step2800.ckpt
+!logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/
+logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/*.ckpt
+!logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/epoch87-step7040.ckpt
+!logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/
+logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/*.ckpt
+!logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/epoch=31-step=2560.ckpt
+!logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/
+logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/*.ckpt
+!logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/epoch117-step9440.ckpt
 
 # Data
 data
