@@ -34,13 +34,13 @@ Our ablation strategy used broad 40-epoch screening runs to map the search space
 | Recurrent architecture | Cell type, hidden size, depth, extra conv blocks | LSTM vs GRU; hidden size 384 or 512; 1 to 3 layers; with or without conv blocks | Spectrogram recurrent models | 40-epoch screening, 150-epoch confirmation |
 | Data availability | Channels per band, train sessions | Channels 1, 2, 4, 8, 16; sessions 2, 4, 8, 16 | BiLSTM (h=384, l=2) | 40 epochs |
 | Decoder | Beam size | Greedy, 10, 25, 50, 75, 100 | Best spectrogram BiGRU checkpoint | Offline decoding |
-| Final raw model | Learned downsampling via raw CNN | 3 CNN layers, channels `[64,128,192]`, stride `[3,4,4]`, kernel `[9,9,9]` | Raw-CNN+BiGRU | 40 epochs |
+| Final raw model | Learned downsampling via raw CNN | 3 CNN layers, channels `[96,192,256]`, stride `[3,4,4]`, kernel `[9,9,9]`, GRU dropout `{0.0, 0.5}` | Raw-CNN+BiGRU | 40-epoch screening, 100/120-epoch confirmation |
 
 ### Decoder and Final Model Design
 
 For decoder-side improvements, we used the repository's existing beam-search decoder with a character-level 6-gram language model (`wikitext-103-6gram-charlm.bin`). The main sweep varied beam size over {10, 25, 50, 75, 100}, with `lm_weight=2.0` and `insertion_bonus=2.0`. This let us measure decoder gain without changing the encoder or retraining the model.
 
-The final raw encoder replaced the handcrafted spectrogram front end with three raw 1D convolution layers, using channels `[64, 128, 192]`, kernels `[9, 9, 9]`, strides `[3, 4, 4]`, paddings `[4, 4, 4]`, and batch normalization. A two-layer bidirectional GRU with hidden size 384 followed the CNN stack. The stride product is `3 x 4 x 4 = 48`, chosen deliberately to match the effective temporal downsampling previously achieved by `hop=48` in the spectrogram pipeline. This model used `window_length=20000`, `stride=12000`, and `padding=[900,200]` raw samples, and should therefore be interpreted as a learned-downsampling counterpart to the best low-frame-rate spectrogram models rather than as an unrelated architecture.
+The final raw encoder replaced the handcrafted spectrogram front end with three raw 1D convolution layers, using channels `[96, 192, 256]`, kernels `[9, 9, 9]`, strides `[3, 4, 4]`, paddings `[4, 4, 4]`, and batch normalization. A two-layer bidirectional GRU with hidden size 384 followed the CNN stack. The stride product is `3 x 4 x 4 = 48`, chosen deliberately to match the effective temporal downsampling previously achieved by `hop=48` in the spectrogram pipeline. This model used `window_length=20000`, `stride=12000`, and `padding=[900,200]` raw samples, and should therefore be interpreted as a learned-downsampling counterpart to the best low-frame-rate spectrogram models rather than as an unrelated architecture. Within this raw-input family, we also swept recurrent dropout with `gru_dropout in {0.0, 0.5}` and later confirmed the strongest checkpoints with longer 100- and 120-epoch runs.
 
 ## Results
 
@@ -120,7 +120,7 @@ Once the temporal design had stabilized, the next question was what kind of recu
 | BiGRU `h=384, l=2` | `hop=48`, `win=16000`, `pad=[900,100]` | 150-epoch full run | 6.4M | **13.49** | **14.11** |
 | ConvGRUConv | `hop=48`, `win=16000`, `pad=[900,100]` | 150-epoch full run | 7.6M | 13.98 | 15.06 |
 
-This table shows why the project converged on BiGRU. A larger BiLSTM looked promising during 40-epoch screening, but the longer run made the overfitting problem obvious: the `h=512, l=3` model ended substantially worse on test CER than the smaller BiLSTM. Adding spectrogram-side convolution around the recurrent core also failed to deliver a reliable test benefit. ConvLSTMConv slightly improved validation but only matched or trailed the simpler recurrent baselines on test, and ConvGRUConv was worse than plain BiGRU. The best generalization came from the smaller, simpler BiGRU, which suggests that this single-user regime rewards efficient recurrence more than raw parameter count.
+This table shows why the project converged on BiGRU. A larger BiLSTM looked promising during 40-epoch screening, but the longer run made the overfitting problem obvious: the `h=512, l=3` model ended substantially worse on test CER than the smaller BiLSTM. Adding spectrogram-side convolution around the recurrent core also failed to deliver a reliable test benefit. ConvLSTMConv slightly improved validation but only matched or trailed the simpler recurrent baselines on test, and ConvGRUConv was worse than plain BiGRU. The best generalization came from the smaller, simpler BiGRU, which suggests that this single-user regime rewards efficient recurrence more than raw parameter count. This also motivated a later regularization check in the final raw-input BiGRU family, where recurrent dropout became the last major encoder-side variable explored in Section 5.3.
 
 #### Data and Signal Availability Ablations
 
@@ -149,7 +149,7 @@ Both tables point in the same direction. The model is not operating in an inform
 
 ### Decoder Improvement and Final Model Design
 
-The last stage of the project separated decoder gains from encoder gains. We first applied beam search to the best spectrogram BiGRU checkpoint, then compared that decoder-side improvement against the new raw-CNN+GRU encoder. These should not be conflated: the best decoded system and the best greedy encoder are not the same model.
+The last stage of the project separated decoder gains from encoder gains. We first applied beam search to the best spectrogram BiGRU checkpoint, then compared that decoder-side improvement against the later confirmed raw-CNN+GRU checkpoints. These should not be conflated: the best greedy encoder, the best decoded validation result, and the best decoded test result are not all the same model.
 
 **Table R6a. Beam-search sweep on the best spectrogram BiGRU checkpoint (`val=13.49`, `test=14.11` under greedy decoding).**
 
@@ -164,12 +164,17 @@ The last stage of the project separated decoder gains from encoder gains. We fir
 
 Beam search delivered the largest single system-level gain in the entire project. Relative to greedy decoding on the same encoder, `beam=50` reduced validation CER by 5.03 points and test CER by 5.42 points. Larger beams slightly improved validation but provided little or no additional test gain, so `beam=50` was the best speed-accuracy trade-off.
 
+Later raw-CNN+GRU beam decoding surpassed this spectrogram benchmark, but Table R6a remains useful because it isolates pure decoder gain on a fixed spectrogram encoder before the raw-input model family is introduced.
+
+For the raw-CNN+GRU finalists, the beam results reported below come from post-hoc decoding of the corresponding saved checkpoints rather than from separate retraining runs.
+
 **Table R6b. Final system summary.**
 
 | System role | Configuration | Horizon | Params | Val CER | Test CER | Notes |
 |---|---|---|---|---|---|---|
 | Best spectrogram encoder under greedy decoding | BiGRU `h=384, l=2`, `hop=48`, `win=16000`, `pad=[900,100]` | 150-epoch full run | 6.4M | 13.49 | 14.11 | Strongest confirmed spectrogram encoder |
-| Best greedy encoder overall | Raw 3-layer CNN + 2-layer BiGRU, stride product 48, `win=20000`, `stride=12000`, `pad=[900,200]` | 40-epoch screening | 4.4M | **11.77** | **13.40** | Uses raw EMG only; no handcrafted transform stack |
-| Best decoded system | Spectrogram BiGRU + beam search (`beam=50`, 6-gram char LM) | Offline decoding | 6.4M encoder | **8.46** | **8.69** | Decoder gain measured on the spectrogram BiGRU checkpoint |
+| Best raw greedy encoder | Raw 3-layer CNN + 2-layer BiGRU, stride product 48, `win=20000`, `stride=12000`, `pad=[900,200]`, `gru_dropout=0.5` | 120-epoch full run | -- | **9.933** | **11.476** | Best greedy raw-input checkpoint; no handcrafted transform stack |
+| Best decoded validation result | Raw 3-layer CNN + 2-layer BiGRU, `gru_dropout=0.0` + beam search | Offline decoding | -- | **6.627** | 7.240 | Best validation CER among decoded raw-input checkpoints |
+| Best decoded test result | Raw 3-layer CNN + 2-layer BiGRU, `gru_dropout=0.5` + beam search | Offline decoding | -- | 6.720 | **6.938** | Best test CER among decoded raw-input checkpoints |
 
-Table R6b clarifies the final takeaway. The raw-CNN+GRU is the strongest greedy encoder observed so far, and it achieved that result while being smaller than the best spectrogram BiGRU and while removing the handcrafted spectrogram front end entirely. However, the best fully decoded system is still the spectrogram BiGRU plus beam search, because that is the only model for which a decoder sweep was completed. The final conclusion is therefore two-part: learned raw downsampling can beat the spectrogram pipeline at the encoder level, while beam search provides an additional and separately measurable decoder-level gain on top of the best confirmed spectrogram encoder.
+Table R6b clarifies the final takeaway. The raw-CNN+GRU is now the strongest greedy encoder observed so far, and the later 120-epoch checkpoint with `gru_dropout=0.5` improved on the otherwise matched 100-epoch no-dropout raw model (`10.013 / 12.622`) by reaching `9.933 / 11.476`. Beam search further improved both raw-input finalists, but the decoded leaderboard is split: the no-dropout checkpoint achieved the best validation CER (`6.627`), while the `gru_dropout=0.5` checkpoint achieved the best test CER (`6.938`). The final conclusion is therefore three-part: learned raw downsampling can beat the spectrogram pipeline at the encoder level, recurrent dropout further improves the strongest raw encoder, and decoder gain should be reported separately for validation and test rather than collapsed into a single decoded winner.
