@@ -1,0 +1,421 @@
+**
+(final_project_report_full_latex_preview.tex
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-02-24> (article.cls
+Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
+(size10.clo
+File: size10.clo 2021/10/04 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count181
+\c@section=\count182
+\c@subsection=\count183
+\c@subsubsection=\count184
+\c@paragraph=\count185
+\c@subparagraph=\count186
+\c@figure=\count187
+\c@table=\count188
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen138
+) (geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks16
+) (ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count189
+\Gm@cntv=\count190
+\c@Gm@tempcnt=\count191
+\Gm@bindingoffset=\dimen139
+\Gm@wd@mp=\dimen140
+\Gm@odd@mp=\dimen141
+\Gm@even@mp=\dimen142
+\Gm@layoutwidth=\dimen143
+\Gm@layoutheight=\dimen144
+\Gm@layouthoffset=\dimen145
+\Gm@layoutvoffset=\dimen146
+\Gm@dimlist=\toks17
+)
+(graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (graphics.sty
+Package: graphics 2021/03/04 v1.4d Standard LaTeX Graphics (DPC,SPQR)
+ (trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: xetex.def on input line 107.
+ (xetex.def
+File: xetex.def 2021/03/18 v5.0k Graphics/color driver for xetex
+))
+\Gin@req@height=\dimen147
+\Gin@req@width=\dimen148
+)
+(l3backend-xetex.def
+File: l3backend-xetex.def 2022-02-07 L3 backend support: XeTeX
+\c__kernel_sys_dvipdfmx_version_int=\count192
+\l__color_backend_stack_int=\count193
+\g__color_backend_stack_int=\count194
+\g__graphics_track_int=\count195
+\l__pdf_internal_box=\box50
+\g__pdf_backend_object_int=\count196
+\g__pdf_backend_annotation_int=\count197
+\g__pdf_backend_link_int=\count198
+) (final_project_report_full_latex_preview.aux)
+\openout1 = `final_project_report_full_latex_preview.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 9.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 9
+.
+ (ts1cmr.fd
+File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
+LaTeX Font Info:    ... okay on input line 9.
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 11.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 11.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 11.
+
+LaTeX Warning: No \author given.
+
+(final_project_report_full_latex.tex [1
+
+]
+Overfull \hbox (0.19699pt too wide) in paragraph at lines 23--24
+\TU/lmtt/m/n/10 TemporalAlignmentJitter -> LogSpectrogram -> SpecAugment\TU/lmr
+/m/n/10 , while validation and test used \TU/lmtt/m/n/10 ToTensor
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 39.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 39.
+
+Overfull \hbox (1.05588pt too wide) in paragraph at lines 41--42
+[]\TU/lmr/m/n/10 The final confirmed Raw-CNN+BiGRU therefore used channels \TU/
+lmtt/m/n/10 [96, 192, 256]\TU/lmr/m/n/10 , \TU/lmtt/m/n/10 window_length=20000\
+TU/lmr/m/n/10 ,
+ []
+
+[2]
+Overfull \hbox (2.1767pt too wide) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 Params| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 Val
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 Test
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmtt/m/n/8 h=384, l=2, hop=16,
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Overfull \hbox (7.49767pt too wide) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 BiLSTM+Transformer| 
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 40-epoch screen-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmtt/m/n/8 h=384, l=2, hop=48,
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 CNN+vanilla
+ []
+
+
+Underfull \hbox (badness 3861) in paragraph at lines 72--72
+[]\TU/lmr/m/n/8 150-epoch confir-
+ []
+
+[3]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 94.
+
+Underfull \hbox (badness 10000) in paragraph at lines 96--96
+[]\TU/lmr/m/n/9 Val
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 96--97
+[]\TU/lmr/m/n/9 Test
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 98--98
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--99
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 100--100
+[]\TU/lmr/m/n/9 Confirmed low
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--101
+[]\TU/lmr/m/n/9 BiLSTM \TU/lmtt/m/n/9 h=384, l=2, hop=48,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
+[]\TU/lmr/m/n/9 Overlapped GRU
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
+[]\TU/lmr/m/n/9 BiGRU \TU/lmtt/m/n/9 h=384, l=2, hop=48,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
+\TU/lmtt/m/n/9 win=12000, pad=[900,200],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 102--102
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--103
+[]\TU/lmr/m/n/9 Best spectrogram
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--103
+[]\TU/lmr/m/n/9 BiGRU \TU/lmtt/m/n/9 h=384, l=2, hop=48,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--103
+\TU/lmtt/m/n/9 win=20000, pad=[900,200],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 103--103
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--104
+[]\TU/lmr/m/n/9 Best spectrogram
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--104
+[]\TU/lmr/m/n/9 BiGRU \TU/lmtt/m/n/9 h=384, l=2, hop=48,
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 106--106
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 107--107
+[]\TU/lmr/m/n/9 Training-data re-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 107--107
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+[4]
+Overfull \hbox (16.86589pt too wide) in paragraph at lines 122--123
+\TU/lmtt/m/n/10 [64,128,192] \TU/lmr/m/n/10 Raw-CNN+BiGRU reached 11.77 / 13.40
+ after 40 screening epochs, while the wider \TU/lmtt/m/n/10 [96,192,256]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--131
+[]\TU/lmr/m/n/9 Raw-CNN+BiGRU
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--131
+[]\TU/lmr/m/n/9 Val
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
+[]\TU/lmr/m/n/9 Test
+ []
+
+
+Underfull \hbox (badness 2042) in paragraph at lines 133--133
+[]\TU/lmr/m/n/9 Narrow width base-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--133
+[]\TU/lmtt/m/n/9 channels=[64,128,192],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--133
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--134
+[]\TU/lmtt/m/n/9 channels=[96,192,256],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--134
+[]\TU/lmr/m/n/9 40-epoch
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--135
+[]\TU/lmr/m/n/9 Longer no-dropout
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 135--135
+[]\TU/lmtt/m/n/9 channels=[96,192,256],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
+[]\TU/lmtt/m/n/9 channels=[96,192,256],
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--137
+[]\TU/lmr/m/n/9 Best decoded 100-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--137
+[]\TU/lmtt/m/n/9 channels=[96,192,256],
+ []
+
+
+Underfull \hbox (badness 1127) in paragraph at lines 137--137
+[]\TU/lmr/m/n/9 Offline decod-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+[]\TU/lmr/m/n/9 Best decoded 120-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--138
+[]\TU/lmtt/m/n/9 channels=[96,192,256],
+ []
+
+
+Underfull \hbox (badness 1127) in paragraph at lines 138--138
+[]\TU/lmr/m/n/9 Offline decod-
+ []
+
+[5] [6]) [7] (final_project_report_full_latex_preview.aux) )
+Output written on final_project_report_full_latex_preview.xdv (7 pages, 235636 
+bytes).
