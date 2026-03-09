@@ -44,13 +44,12 @@ dmypy.json
 .hypothesis
 
 # Logs and checkpoints
-# logs/          # 不忽略 logs/，以便保留 .out .err 等
+# logs/         
 # lightning_logs/
-# 仅忽略 2025-03-01 之前的日期文件夹，保留 0301 及之后的 log
 logs/202[0-4]-*/
 logs/2025-0[12]-*/
-models/          # 忽略 checkpoint 目录
-*.ckpt           # 忽略所有 .ckpt 文件（大体积不同步）
+models/          
+*.ckpt           
 logs/**/checkpoints/
 !logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/
 logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/*.ckpt

@@ -1,3 +1,4 @@
+# CGRU: CNN + GRU hybrid with CTC. Log spectrogram input.
 # @package _global_
 module:
   _target_: emg2qwerty.lightning.CGRUCTCModule

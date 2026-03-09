@@ -1,3 +1,4 @@
+# Raw CNN+GRU: CNN + GRU with raw EMG tensor (no spectrogram). Uses raw_tensor transform.
 defaults:
   - user: single_user
   - transforms: raw_tensor

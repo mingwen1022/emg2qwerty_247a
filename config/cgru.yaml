@@ -1,3 +1,4 @@
+# CGRU: CNN + GRU hybrid with CTC. Log spectrogram input.
 defaults:
   - user: single_user
   - transforms: log_spectrogram

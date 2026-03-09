@@ -1,3 +1,5 @@
+# Base config: TDS (Temporal Depthwise-Separable) Conv CTC baseline.
+# Uses log spectrogram input and CTC greedy decoding.
 defaults:
   - user: single_user
   - transforms: log_spectrogram

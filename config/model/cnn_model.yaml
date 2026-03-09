@@ -1,3 +1,4 @@
+# CNN model (TDS Conv backbone). Log spectrogram input.
 # @package _global_
 module:
   _target_: emg2qwerty.lightning.TDSConvCTCModule

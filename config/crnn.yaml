@@ -1,3 +1,4 @@
+# CRNN: Convolutional Recurrent Neural Network (CNN + RNN) with CTC. Log spectrogram input.
 defaults:
   - user: single_user
   - transforms: log_spectrogram
