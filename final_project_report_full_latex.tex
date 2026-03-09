@@ -8,7 +8,7 @@ We study single-user EMG-to-QWERTY decoding on the emg2qwerty dataset and ask wh
 
 \section{Introduction}
 
-Surface electromyography (sEMG) records muscle activity from the wrist and offers a promising path toward non-invasive typing interfaces. In the emg2qwerty task, the goal is to map multichannel EMG sequences to the characters typed on a QWERTY keyboard. Because the typed characters occur at irregular timestamps and are not pre-aligned with the input sequence, the task is naturally formulated as a sequence prediction problem with Connectionist Temporal Classification (CTC) loss and Character Error Rate (CER) evaluation.
+Surface electromyography (sEMG) records muscle activity from the wrist and offers a promising path toward non-invasive typing interfaces. In the emg2qwerty task~\cite{sivakumar2024emg2qwerty}, the goal is to map multichannel EMG sequences to the characters typed on a QWERTY keyboard. Because the typed characters occur at irregular timestamps and are not pre-aligned with the input sequence, the task is naturally formulated as a sequence prediction problem with Connectionist Temporal Classification (CTC) loss~\cite{graves2006ctc} and Character Error Rate (CER) evaluation.
 
 The course starter repository provides a convolutional baseline based on a TDS encoder. However, EMG typing is fundamentally sequential, and the project guidelines explicitly encourage exploration beyond CNNs. This raises a practical question: in a single-user, limited-data regime, which modeling choices produce the largest CER improvement? Candidate answers include recurrent encoders, CNN-RNN hybrids, attention-heavy models, decoder-side language modeling, and preprocessing choices that change the effective temporal resolution seen by the model.
 
@@ -18,7 +18,7 @@ Our project focuses on the personalized single-user setting from the course spli
 
 \subsection{Experimental Setup}
 
-All experiments were conducted on the personalized single-user split for subject \texttt{89335547} provided by the course repository. The split contains 16 training sessions, 1 validation session, and 1 test session. We report Character Error Rate (CER) on validation and test, with lower being better. Unless otherwise noted, models were trained with CTC loss and decoded with greedy CTC decoding; beam-search decoding was applied only in the decoder study and in the final post-hoc evaluation of the strongest checkpoints.
+All experiments were conducted on the personalized single-user split for subject \texttt{89335547} provided by the emg2qwerty dataset and course repository~\cite{sivakumar2024emg2qwerty}. The split contains 16 training sessions, 1 validation session, and 1 test session. We report Character Error Rate (CER) on validation and test, with lower being better. Unless otherwise noted, models were trained with CTC loss and decoded with greedy CTC decoding; beam-search decoding was applied only in the decoder study and in the final post-hoc evaluation of the strongest checkpoints.
 
 The input signal is raw sEMG sampled at 2 kHz from two wrist bands, with 16 channels per band. For the spectrogram-based model family, the training transform stack was \texttt{ToTensor -> RandomBandRotation -> TemporalAlignmentJitter -> LogSpectrogram -> SpecAugment}, while validation and test used \texttt{ToTensor -> LogSpectrogram}. This kept the downstream loss and decoder interface fixed while isolating architecture and context-design effects. The learned-downsampling Raw-CNN+BiGRU is the main exception: it used only \texttt{ToTensor} and learned its temporal downsampling directly from raw EMG.
 
@@ -26,7 +26,7 @@ Window length, stride, and padding are reported in raw EMG samples. At 2 kHz, \t
 
 \subsection{Model Families and Study Design}
 
-The reference system was the course baseline TDS CNN. We compared it against BiLSTM and BiGRU encoders, hybrid models such as TDS+BiLSTM and ConvLSTMConv/ConvGRUConv, and attention-heavy alternatives including BiLSTM+Transformer and a Conformer. Both plain and CNN-front-end vanilla BiRNN controls were retained as negative controls to show what failed in this regime. Architecture selection was followed by recurrent-focused ablations over four factors: temporal resolution, context design, recurrent architecture, and data availability.
+The reference system was the course baseline TDS CNN. We compared it against BiLSTM and BiGRU encoders, hybrid models such as TDS+BiLSTM and ConvLSTMConv/ConvGRUConv, and attention-heavy alternatives including BiLSTM+Transformer models built on the Transformer architecture~\cite{vaswani2017attention} and a Conformer~\cite{gulati2020conformer}. Both plain and CNN-front-end vanilla BiRNN controls were retained as negative controls to show what failed in this regime. Architecture selection was followed by recurrent-focused ablations over four factors: temporal resolution, context design, recurrent architecture, and data availability.
 
 For temporal resolution, we swept spectrogram hop length from 8 to 64 and confirmed the strongest region with longer training. For context design, we ran a broader sweep over BiLSTM windows of \texttt{8000} and \texttt{16000} with paddings \texttt{[1800,200]} and \texttt{[900,100]}, and BiGRU windows of \texttt{4000}, \texttt{12000}, and \texttt{20000} with strides \texttt{2000}, \texttt{6000}, and \texttt{12000} and paddings \texttt{[900,100]} or \texttt{[900,200]}. This was intended to separate the effects of longer context, contextual padding, and window overlap. For recurrent architecture, we compared LSTM versus GRU, different hidden sizes and depths, and the addition of convolutional blocks around the recurrent core. For data availability, we reduced the number of channels and training sessions while keeping the backbone fixed to test whether remaining limitations were architectural or informational.
 
@@ -154,7 +154,11 @@ Table~\ref{tab:final} should be read in two blocks. The first four rows are gree
 
 \noindent\textbf{Decoder gains and limitations.} Beam search adds a complementary lesson. Its improvement on the spectrogram BiGRU is large, and the decoded Raw-CNN+BiGRU results show that decoder-side language information remains useful even after strong encoder improvements. At the same time, beam search does not eliminate the need for a better encoder; the Raw-CNN+BiGRU still improves the greedy starting point substantially. There are also clear limitations. All results are from a single-user setting, so we cannot claim the same ranking will hold across users. The best decoded validation and test results come from different Raw-CNN+BiGRU checkpoints, which is a reminder that this regime is small enough for checkpoint selection noise to matter. The Raw-CNN width search was also intentionally narrow: we compared \texttt{[64,128,192]} against \texttt{[96,192,256]} and then carried the stronger variant forward rather than performing an exhaustive width sweep. Finally, our best results rely on offline LM-based decoding, so the reported numbers do not by themselves establish a real-time deployment point. Even with those caveats, the central story remains stable: recurrent models beat the baseline, coarse temporal compression matters, and learned raw downsampling is the most effective encoder-side improvement we found.
 
-\begin{thebibliography}{9}
+\makeatletter
+\@ifundefined{references}{\newenvironment{references}[1]{\begin{thebibliography}{#1}}{\end{thebibliography}}}{}
+\@ifundefined{bibname}{\renewcommand{\refname}{References}}{\renewcommand{\bibname}{References}}
+\makeatother
+\begin{references}{9}
 
 \bibitem{graves2006ctc}
 Alex Graves, Santiago Fernandez, Faustino Gomez, and Jurgen Schmidhuber.
@@ -176,4 +180,4 @@ Anmol Gulati, James Qin, Chung-Cheng Chiu, Niki Parmar, Yu Zhang, Jiahui Yu, Wil
 Conformer: Convolution-augmented transformer for speech recognition.
 \textit{Proceedings of Interspeech}, 2020.
 
-\end{thebibliography}
+\end{references}
