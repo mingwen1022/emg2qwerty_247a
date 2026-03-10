@@ -2,4 +2,3 @@
 optimizer:
   _target_: torch.optim.Adam
   lr: 1e-3
-  # lr: 5e-4

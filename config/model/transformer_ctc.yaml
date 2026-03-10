@@ -1,0 +1,29 @@
+# @package _global_
+# Transformer encoder + CTC. Uses same frontend as TDS baseline.
+# Lower LR (1e-4) is typical for transformers; baseline uses 1e-3.
+module:
+  _target_: emg2qwerty.lightning.TransformerCTCModule
+  in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16
+  electrode_channels: 16  # Override for channels ablation (4, 8, 12, 16)
+  mlp_features: [384]
+  d_model: 768  # NUM_BANDS * mlp_features[-1] = 2 * 384
+  nhead: 8
+  num_layers: 4
+  dim_feedforward: 3072  # 4 * d_model
+  dropout: 0.1
+
+# Override LR for transformer (baseline 1e-3 often too high)
+optimizer:
+  lr: 1e-4
+
+# Gradient clipping helps transformer training stability
+trainer:
+  gradient_clip_val: 1.0
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
+  # Use windowed test (same as val) for fair comparison. Transformer is trained
+  # on ~500-frame windows; full-session test (140k+ frames) causes collapse.
+  test_window_length: 8000

@@ -1,0 +1,23 @@
+# @package _global_
+# Preprocessing ablation: add Gaussian noise to raw EMG
+defaults:
+  - log_spectrogram
+
+gaussian_noise:
+  _target_: emg2qwerty.transforms.GaussianNoise
+  std: 0.01
+
+transforms:
+  train:
+    - ${to_tensor}
+    - ${gaussian_noise}
+    - ${band_rotation}
+    - ${temporal_jitter}
+    - ${logspec}
+    - ${specaug}
+
+  val:
+    - ${to_tensor}
+    - ${logspec}
+
+  test: ${transforms.val}

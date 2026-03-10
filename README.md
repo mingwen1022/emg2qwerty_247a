@@ -94,6 +94,7 @@ python -m emg2qwerty.train \
   trainer.accelerator=gpu trainer.devices=1
 ```
 
+<<<<<<< HEAD
 GRU-based personalized user model:
 
 ```shell
@@ -114,6 +115,8 @@ python -m emg2qwerty.train \
 
 These GRU paths are additive; the existing RNN/CRNN configs and commands remain unchanged.
 
+=======
+>>>>>>> 308ab0a (SH)
 If you are using a Slurm cluster, include "cluster=slurm" override in the argument list of above commands to pick up `config/cluster/slurm.yaml`. This overrides the Hydra Launcher to use [Submitit plugin](https://hydra.cc/docs/plugins/submitit_launcher). Refer to Hydra documentation for the list of available launcher plugins if you are not using a Slurm cluster.
 
 ## Testing

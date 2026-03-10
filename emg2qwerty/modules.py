@@ -4,6 +4,7 @@
 # This source code is licensed under the license found in the
 # LICENSE file in the root directory of this source tree.
 
+import math
 from collections.abc import Sequence
 
 import torch
@@ -169,6 +170,7 @@ class MultiBandRotationInvariantMLP(nn.Module):
         return torch.stack(outputs_per_band, dim=self.stack_dim)
 
 
+<<<<<<< HEAD
 class VanillaRNNEncoder(nn.Module):
     """A vanilla RNN encoder over time for input tensors of shape (T, N, C).
 
@@ -373,6 +375,8 @@ class RawEMGCNNEncoder(nn.Module):
         return lengths
 
 
+=======
+>>>>>>> 308ab0a (SH)
 class TDSConv2dBlock(nn.Module):
     """A 2D temporal convolution block as per "Sequence-to-Sequence Speech
     Recognition with Time-Depth Separable Convolutions, Hannun et al"
@@ -385,12 +389,23 @@ class TDSConv2dBlock(nn.Module):
         width (int): Input width. For an input of shape (T, N, num_features),
             the invariant we want is channels * width = num_features.
         kernel_width (int): The kernel size of the temporal convolution.
+        preserve_length (bool): If True, use padding so output T equals input T
+            (for CNN+Transformer hybrid). If False, output is shorter (original
+            TDS behavior). (default: False)
     """
 
-    def __init__(self, channels: int, width: int, kernel_width: int) -> None:
+    def __init__(
+        self,
+        channels: int,
+        width: int,
+        kernel_width: int,
+        preserve_length: bool = False,
+    ) -> None:
         super().__init__()
         self.channels = channels
         self.width = width
+        self.preserve_length = preserve_length
+        self.kernel_width = kernel_width
 
         self.conv2d = nn.Conv2d(
             in_channels=channels,
@@ -403,17 +418,23 @@ class TDSConv2dBlock(nn.Module):
     def forward(self, inputs: torch.Tensor) -> torch.Tensor:
         T_in, N, C = inputs.shape  # TNC
 
-        # TNC -> NCT -> NcwT
         x = inputs.movedim(0, -1).reshape(N, self.channels, self.width, T_in)
+        if self.preserve_length:
+            # Asymmetric padding for exact length preservation (odd kernel_width
+            # e.g. 32 requires pad_left=15, pad_right=16 for output T = input T)
+            pad_l = (self.kernel_width - 1) // 2
+            pad_r = self.kernel_width - 1 - pad_l
+            x = nn.functional.pad(x, (pad_l, pad_r), mode="constant", value=0)
         x = self.conv2d(x)
         x = self.relu(x)
         x = x.reshape(N, C, -1).movedim(-1, 0)  # NcwT -> NCT -> TNC
 
-        # Skip connection after downsampling
-        T_out = x.shape[0]
-        x = x + inputs[-T_out:]
+        if self.preserve_length:
+            x = x + inputs
+        else:
+            T_out = x.shape[0]
+            x = x + inputs[-T_out:]
 
-        # Layer norm over C
         return self.layer_norm(x)  # TNC
 
 
@@ -444,6 +465,7 @@ class TDSFullyConnectedBlock(nn.Module):
         return self.layer_norm(x)  # TNC
 
 
+<<<<<<< HEAD
 class TwoLayerFCBlock(nn.Module):
     """Two-layer FC with residual and LayerNorm (TDS-style)."""
 
@@ -460,6 +482,8 @@ class TwoLayerFCBlock(nn.Module):
         return self.norm(x + self.fc(x))
 
 
+=======
+>>>>>>> 308ab0a (SH)
 class TDSConvEncoder(nn.Module):
     """A time depth-separable convolutional encoder composing a sequence
     of `TDSConv2dBlock` and `TDSFullyConnectedBlock` as per
@@ -498,3 +522,181 @@ class TDSConvEncoder(nn.Module):
 
     def forward(self, inputs: torch.Tensor) -> torch.Tensor:
         return self.tds_conv_blocks(inputs)  # (T, N, num_features)
+
+
+class CNNTransformerEncoder(nn.Module):
+    """CNN + Transformer hybrid encoder. Stacks length-preserving TDS conv blocks
+    (local feature extraction) followed by a transformer (global context).
+    No temporal downsampling — output length equals input length for CTC.
+
+    Args:
+        num_features (int): Feature dimension (d_model).
+        cnn_block_channels (list): Channel config for each CNN block.
+        cnn_kernel_width (int): Temporal kernel size for CNN blocks.
+        nhead (int): Number of transformer attention heads.
+        num_layers (int): Number of transformer encoder layers.
+        dim_feedforward (int | None): FFN hidden dim. (default: 4 * d_model)
+        dropout (float): Dropout probability. (default: 0.1)
+    """
+
+    def __init__(
+        self,
+        num_features: int,
+        cnn_block_channels: Sequence[int],
+        cnn_kernel_width: int,
+        nhead: int,
+        num_layers: int,
+        dim_feedforward: int | None = None,
+        dropout: float = 0.1,
+    ) -> None:
+        super().__init__()
+
+        cnn_blocks: list[nn.Module] = []
+        for channels in cnn_block_channels:
+            assert num_features % channels == 0
+            width = num_features // channels
+            cnn_blocks.extend(
+                [
+                    TDSConv2dBlock(
+                        channels, width, cnn_kernel_width, preserve_length=True
+                    ),
+                    TDSFullyConnectedBlock(num_features),
+                ]
+            )
+        self.cnn = nn.Sequential(*cnn_blocks)
+        self.transformer = TransformerEncoderStack(
+            d_model=num_features,
+            nhead=nhead,
+            num_layers=num_layers,
+            dim_feedforward=dim_feedforward,
+            dropout=dropout,
+        )
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        input_lengths: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        x = self.cnn(x)
+        return self.transformer(x, input_lengths=input_lengths)
+
+
+# -----------------------------------------------------------------------------
+# Transformer encoder for CTC (replaces TDSConvEncoder)
+# -----------------------------------------------------------------------------
+
+
+class SinusoidalPositionalEncoding(nn.Module):
+    """Sinusoidal positional encoding. Adds positional information to sequences.
+
+    Args:
+        d_model (int): Embedding dimension.
+        dropout (float): Dropout probability. (default: 0.1)
+        max_len (int): Maximum sequence length for precomputed buffer. Sequences
+            longer than this are supported via on-the-fly computation. (default: 5000)
+    """
+
+    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000) -> None:
+        super().__init__()
+        self.dropout = nn.Dropout(p=dropout)
+        self.d_model = d_model
+        self.max_len = max_len
+        pe = torch.zeros(max_len, d_model)
+        position = torch.arange(0, max_len, dtype=torch.float32).unsqueeze(1)
+        div_term = torch.exp(
+            torch.arange(0, d_model, 2, dtype=torch.float32) * (-math.log(10000.0) / d_model)
+        )
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        pe = pe.unsqueeze(1)  # (max_len, 1, d_model)
+        self.register_buffer("pe", pe)
+
+    def _get_pe(self, seq_len: int, device: torch.device) -> torch.Tensor:
+        """Return positional encoding of shape (seq_len, 1, d_model)."""
+        if seq_len <= self.max_len:
+            return self.pe[:seq_len]
+        # On-the-fly compute for sequences longer than precomputed buffer
+        # (e.g. test-time with full sessions, window_length=None)
+        pe = torch.zeros(seq_len, self.d_model, device=device, dtype=self.pe.dtype)
+        position = torch.arange(0, seq_len, device=device, dtype=torch.float32).unsqueeze(1)
+        div_term = torch.exp(
+            torch.arange(0, self.d_model, 2, device=device, dtype=torch.float32)
+            * (-math.log(10000.0) / self.d_model)
+        )
+        pe[:, 0::2] = torch.sin(position * div_term)
+        pe[:, 1::2] = torch.cos(position * div_term)
+        return pe.unsqueeze(1)  # (seq_len, 1, d_model)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """x: (T, N, d_model)"""
+        x = x + self._get_pe(x.size(0), x.device)
+        return self.dropout(x)
+
+
+class TransformerEncoderStack(nn.Module):
+    """Transformer encoder stack for sequence-to-sequence with CTC.
+
+    Uses the same input/output format as TDSConvEncoder: (T, N, num_features).
+    No temporal downsampling — output length equals input length for CTC.
+
+    Args:
+        d_model (int): Model dimension (must match num_features from frontend).
+        nhead (int): Number of attention heads.
+        num_layers (int): Number of transformer encoder layers.
+        dim_feedforward (int): FFN hidden dimension. (default: 4 * d_model)
+        dropout (float): Dropout probability. (default: 0.1)
+        activation (str): FFN activation. (default: "gelu")
+    """
+
+    def __init__(
+        self,
+        d_model: int,
+        nhead: int,
+        num_layers: int,
+        dim_feedforward: int | None = None,
+        dropout: float = 0.1,
+        activation: str = "gelu",
+    ) -> None:
+        super().__init__()
+        self.d_model = d_model
+        dim_feedforward = dim_feedforward or 4 * d_model
+
+        self.pos_encoder = SinusoidalPositionalEncoding(d_model, dropout)
+
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model,
+            nhead=nhead,
+            dim_feedforward=dim_feedforward,
+            dropout=dropout,
+            activation=activation,
+            batch_first=False,  # (T, N, D) format
+            norm_first=True,  # Pre-norm for more stable training
+        )
+        self.transformer = nn.TransformerEncoder(
+            encoder_layer,
+            num_layers=num_layers,
+            enable_nested_tensor=False,  # Ensure consistent behavior with padding
+        )
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        input_lengths: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        """Forward pass.
+
+        Args:
+            x: (T, N, d_model) input features.
+            input_lengths: (N,) actual lengths for each batch item. Used to build
+                key_padding_mask so padding positions are ignored. If None, no mask.
+
+        Returns:
+            (T, N, d_model) output.
+        """
+        x = self.pos_encoder(x)
+        key_padding_mask = None
+        if input_lengths is not None:
+            # key_padding_mask: (N, T), True = ignore (padding)
+            T, N = x.shape[0], x.shape[1]
+            key_padding_mask = torch.arange(T, device=x.device)[None, :] >= input_lengths[:, None]
+        return self.transformer(x, src_key_padding_mask=key_padding_mask)

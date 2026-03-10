@@ -121,6 +121,64 @@ class RandomBandRotation:
 
 
 @dataclass
+<<<<<<< HEAD
+=======
+class SelectChannels:
+    """Select first N electrode channels per band, for ablation studies on
+    channel count vs CER. Input shape: (T, bands, C) or (T, bands, C, freq).
+    Channel dim is -1 for raw (T, bands, C) and -2 for spectrogram (T, bands, C, freq).
+
+    Args:
+        num_channels (int): Number of channels to keep (first N per band).
+        channel_dim (int): Dimension containing electrode channels. (default: -1)
+    """
+
+    num_channels: int
+    channel_dim: int = -1
+
+    def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
+        return tensor.narrow(
+            self.channel_dim, 0, min(self.num_channels, tensor.shape[self.channel_dim])
+        )
+
+
+@dataclass
+class Resample:
+    """Decimate EMG by taking every Nth sample along time. Simulates lower
+    sampling rates for ablation: 2kHz / factor = effective Hz.
+    E.g. factor=2 -> 1kHz, factor=4 -> 500Hz.
+
+    Args:
+        factor (int): Downsample factor (take every Nth sample).
+    """
+
+    factor: int = 1
+
+    def __post_init__(self) -> None:
+        assert self.factor >= 1
+
+    def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
+        if self.factor == 1:
+            return tensor
+        return tensor[:: self.factor]
+
+
+@dataclass
+class GaussianNoise:
+    """Add Gaussian noise to raw EMG for augmentation. Apply before spectrogram.
+
+    Args:
+        std (float): Standard deviation of noise.
+    """
+
+    std: float = 0.01
+
+    def __call__(self, tensor: torch.Tensor) -> torch.Tensor:
+        return tensor + torch.randn_like(tensor, device=tensor.device) * self.std
+
+
+@dataclass
+>>>>>>> 308ab0a (SH)
 class TemporalAlignmentJitter:
     """Applies a temporal jittering augmentation that randomly jitters the
     alignment of left and right EMG data by up to ``max_offset`` timesteps.

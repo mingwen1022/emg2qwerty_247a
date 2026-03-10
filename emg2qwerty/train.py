@@ -42,17 +42,37 @@ def main(config: DictConfig):
     pl.seed_everything(config.seed, workers=True)
 
     # Helper to instantiate full paths for dataset sessions
+<<<<<<< HEAD
     def _full_session_paths(dataset: ListConfig) -> list[Path]:
         sessions = [session["session"] for session in dataset]
         return [
             Path(config.dataset.root).joinpath(f"{session}.hdf5")
             for session in sessions
         ]
+=======
+    def _full_session_paths(
+        dataset: ListConfig,
+        subset_fraction: float | None = None,
+        max_sessions: int | None = None,
+    ) -> list[Path]:
+        sessions = [session["session"] for session in dataset]
+        paths = [
+            Path(config.dataset.root).joinpath(f"{session}.hdf5")
+            for session in sessions
+        ]
+        if max_sessions is not None and max_sessions < len(paths):
+            paths = paths[:max_sessions]
+        if subset_fraction is not None and 0 < subset_fraction < 1:
+            n = max(1, int(len(paths) * subset_fraction))
+            paths = paths[:n]
+        return paths
+>>>>>>> 308ab0a (SH)
 
     # Helper to instantiate transforms
     def _build_transform(configs: Sequence[DictConfig]) -> Transform[Any, Any]:
         return transforms.Compose([instantiate(cfg) for cfg in configs])
 
+<<<<<<< HEAD
     # Helper to build module kwargs for load_from_checkpoint
     def _module_kwargs(module_cfg: DictConfig) -> dict[str, Any]:
         kwargs = OmegaConf.to_container(module_cfg, resolve=True)
@@ -60,6 +80,8 @@ def main(config: DictConfig):
         kwargs.pop("_target_", None)
         return kwargs
 
+=======
+>>>>>>> 308ab0a (SH)
     # Instantiate LightningModule
     log.info(f"Instantiating LightningModule {config.module}")
     module = instantiate(
@@ -76,16 +98,32 @@ def main(config: DictConfig):
             optimizer=config.optimizer,
             lr_scheduler=config.lr_scheduler,
             decoder=config.decoder,
+<<<<<<< HEAD
             **_module_kwargs(config.module),
+=======
+>>>>>>> 308ab0a (SH)
         )
 
     # Instantiate LightningDataModule
     log.info(f"Instantiating LightningDataModule {config.datamodule}")
+<<<<<<< HEAD
+=======
+    train_subset = config.dataset.get("train_subset", None)
+    max_train_sessions = config.dataset.get("max_train_sessions", None)
+>>>>>>> 308ab0a (SH)
     datamodule = instantiate(
         config.datamodule,
         batch_size=config.batch_size,
         num_workers=config.num_workers,
+<<<<<<< HEAD
         train_sessions=_full_session_paths(config.dataset.train),
+=======
+        train_sessions=_full_session_paths(
+            config.dataset.train,
+            subset_fraction=train_subset,
+            max_sessions=max_train_sessions,
+        ),
+>>>>>>> 308ab0a (SH)
         val_sessions=_full_session_paths(config.dataset.val),
         test_sessions=_full_session_paths(config.dataset.test),
         train_transform=_build_transform(config.transforms.train),
@@ -98,9 +136,23 @@ def main(config: DictConfig):
     callback_configs = config.get("callbacks", [])
     callbacks = [instantiate(cfg) for cfg in callback_configs]
 
+<<<<<<< HEAD
     # Initialize trainer
     trainer = pl.Trainer(
         **config.trainer,
+=======
+    # Instantiate loggers (Trainer expects objects, not config dicts)
+    trainer_kwargs = OmegaConf.to_container(config.trainer, resolve=True)
+    logger_configs = trainer_kwargs.pop("logger", None)
+    loggers = True  # Lightning default
+    if logger_configs:
+        loggers = [instantiate(cfg) for cfg in logger_configs]
+
+    # Initialize trainer
+    trainer = pl.Trainer(
+        **trainer_kwargs,
+        logger=loggers,
+>>>>>>> 308ab0a (SH)
         callbacks=callbacks,
     )
 
@@ -116,11 +168,15 @@ def main(config: DictConfig):
 
         # Load best checkpoint
         module = module.load_from_checkpoint(
+<<<<<<< HEAD
             trainer.checkpoint_callback.best_model_path,
             optimizer=config.optimizer,
             lr_scheduler=config.lr_scheduler,
             decoder=config.decoder,
             **_module_kwargs(config.module),
+=======
+            trainer.checkpoint_callback.best_model_path
+>>>>>>> 308ab0a (SH)
         )
 
     # Validate and test on the best checkpoint (if training), or on the
@@ -131,10 +187,23 @@ def main(config: DictConfig):
     results = {
         "val_metrics": val_metrics,
         "test_metrics": test_metrics,
+<<<<<<< HEAD
         "best_checkpoint": trainer.checkpoint_callback.best_model_path,
     }
     pprint.pprint(results, sort_dicts=False)
 
+=======
+        "best_checkpoint": str(trainer.checkpoint_callback.best_model_path),
+    }
+    pprint.pprint(results, sort_dicts=False)
+
+    # Write results to JSON for collect_ablation_results.py (Hydra cwd is run dir)
+    import json
+    results_path = Path.cwd() / "results.json"
+    with open(results_path, "w") as f:
+        json.dump(results, f, indent=2)
+
+>>>>>>> 308ab0a (SH)
 
 if __name__ == "__main__":
     OmegaConf.register_new_resolver("cpus_per_task", utils.cpus_per_task)

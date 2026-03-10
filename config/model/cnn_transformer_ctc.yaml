@@ -1,0 +1,27 @@
+# @package _global_
+# CNN + Transformer hybrid + CTC. Ablation: local (CNN) + global (Transformer) features.
+# Uses same frontend as TDS and pure transformer. Lower LR for transformer stability.
+module:
+  _target_: emg2qwerty.lightning.CNNTransformerCTCModule
+  in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16
+  mlp_features: [384]
+  d_model: 768  # NUM_BANDS * mlp_features[-1] = 2 * 384
+  cnn_block_channels: [24, 24]  # 2 CNN blocks (Conv+FC each) before transformer
+  cnn_kernel_width: 32
+  nhead: 8
+  num_layers: 4
+  dim_feedforward: 3072  # 4 * d_model
+  dropout: 0.1
+
+# Override LR for transformer component
+optimizer:
+  lr: 1e-4
+
+trainer:
+  gradient_clip_val: 1.0
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000
+  padding: [1800, 200]
+  test_window_length: 8000  # Windowed test for fair comparison (like transformer)

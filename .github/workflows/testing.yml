@@ -1,6 +1,10 @@
 name: Python Package using Conda
 
+<<<<<<< HEAD
 on: [pull_request]
+=======
+on: [push]
+>>>>>>> 308ab0a (SH)
 
 jobs:
   build-linux:

@@ -1,0 +1,64 @@
+# @package _global_
+# Ablation study transforms. Override via CLI, e.g.:
+#   transforms=ablation select_channels.num_channels=8 resample.factor=2
+#   dataset.train_subset=0.5 gaussian_noise.std=0.01
+
+to_tensor:
+  _target_: emg2qwerty.transforms.ToTensor
+  fields: [emg_left, emg_right]
+
+# Ablation parameters (override via CLI)
+resample:
+  _target_: emg2qwerty.transforms.Resample
+  factor: 1  # 1=2kHz, 2=1kHz, 4=500Hz, 8=250Hz
+
+select_channels:
+  _target_: emg2qwerty.transforms.SelectChannels
+  num_channels: 16  # Override: 4, 8, 12, 16
+
+gaussian_noise:
+  _target_: emg2qwerty.transforms.GaussianNoise
+  std: 0  # Override: 0.01 for augmentation ablation
+
+band_rotation:
+  _target_: emg2qwerty.transforms.ForEach
+  transform:
+    _target_: emg2qwerty.transforms.RandomBandRotation
+    offsets: [-1, 0, 1]
+
+temporal_jitter:
+  _target_: emg2qwerty.transforms.TemporalAlignmentJitter
+  max_offset: 120
+
+logspec:
+  _target_: emg2qwerty.transforms.LogSpectrogram
+  n_fft: 64
+  hop_length: 16
+
+specaug:
+  _target_: emg2qwerty.transforms.SpecAugment
+  n_time_masks: 3
+  time_mask_param: 25
+  n_freq_masks: 2
+  freq_mask_param: 4
+
+# Compose: ToTensor -> Resample -> SelectChannels -> [GaussianNoise] -> BandRotation -> TemporalJitter -> LogSpec -> SpecAug
+# GaussianNoise with std=0 is a no-op; override ablation.gaussian_noise.std for augmentation ablation
+transforms:
+  train:
+    - ${to_tensor}
+    - ${resample}
+    - ${select_channels}
+    - ${gaussian_noise}
+    - ${band_rotation}
+    - ${temporal_jitter}
+    - ${logspec}
+    - ${specaug}
+
+  val:
+    - ${to_tensor}
+    - ${resample}
+    - ${select_channels}
+    - ${logspec}
+
+  test: ${transforms.val}

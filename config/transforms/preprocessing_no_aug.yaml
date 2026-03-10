@@ -1,0 +1,9 @@
+# @package _global_
+# Preprocessing ablation: no SpecAugment (baseline for augmentation comparison)
+defaults:
+  - log_spectrogram
+
+specaug:
+  _target_: emg2qwerty.transforms.SpecAugment
+  n_time_masks: 0
+  n_freq_masks: 0
