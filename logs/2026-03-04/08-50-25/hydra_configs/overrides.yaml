@@ -1,0 +1,7 @@
+- user=single_user
+- model=transformer_ctc
+- trainer.max_epochs=40
+- trainer.accelerator=cpu
+- transforms=preprocessing_gaussian
+- trainer.max_epochs=40
+- trainer.accelerator=gpu

@@ -1,0 +1,8 @@
+- user=single_user
+- model=transformer_ctc
+- trainer.max_epochs=40
+- trainer.accelerator=cpu
+- transforms=ablation
+- resample.factor=4
+- trainer.max_epochs=40
+- trainer.accelerator=gpu

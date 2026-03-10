@@ -1,0 +1,10 @@
+- user=single_user
+- model=transformer_ctc
+- trainer.max_epochs=40
+- trainer.accelerator=cpu
+- transforms=ablation
+- select_channels.num_channels=12
+- module.electrode_channels=12
+- module.in_features=396
+- trainer.max_epochs=40
+- trainer.accelerator=gpu
