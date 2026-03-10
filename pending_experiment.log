@@ -34,3 +34,5 @@ Tue Mar 10 18:36:02 UTC 2026: Skipping conv_gru_conv_baseline_40ep (already done
 Tue Mar 10 18:36:02 UTC 2026: Skipping bilstm_transformer_baseline_40ep (already done)
 Tue Mar 10 18:36:02 UTC 2026: Skipping tds_bilstm_150ep (already done)
 Tue Mar 10 18:36:02 UTC 2026: Starting channel_ablation_12ch
+channel_ablation_12ch done
+Tue Mar 10 18:55:39 UTC 2026: All done!
