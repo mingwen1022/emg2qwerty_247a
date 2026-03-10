@@ -4,13 +4,10 @@
 # Backup files
 *~
 
-<<<<<<< HEAD
-=======
 ablation.log
 ablation_sample.csv
 ablation_results.csv
 
->>>>>>> 308ab0a (SH)
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -18,11 +15,7 @@ __pycache__/
 
 # Mac
 .DS_Store
-<<<<<<< HEAD
-._*              
-=======
 ._*
->>>>>>> 308ab0a (SH)
 
 # Build and Environments
 .condaenv
@@ -54,31 +47,12 @@ dmypy.json
 # Hypothesis
 .hypothesis
 
-# Logs and checkpoints
-<<<<<<< HEAD
-# logs/         
-# lightning_logs/
-logs/202[0-4]-*/
-logs/2025-0[12]-*/
-models/          
-*.ckpt           
+# Logs and checkpoints (keep logs/ configs, exclude checkpoints)
 logs/**/checkpoints/
-!logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/
-logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/*.ckpt
-!logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/checkpoints/epoch34-step2800.ckpt
-!logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/
-logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/*.ckpt
-!logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/checkpoints/epoch87-step7040.ckpt
-!logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/
-logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/*.ckpt
-!logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/checkpoints/epoch=31-step=2560.ckpt
-!logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/
-logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/*.ckpt
-!logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/epoch117-step9440.ckpt
-=======
-# logs/
-# lightning_logs/
->>>>>>> 308ab0a (SH)
+logs/**/lightning_logs/
+lightning_logs/
+models/
+*.ckpt
 
 # Data
 data
@@ -87,7 +61,8 @@ bids_data
 
 # LM
 wikitext-103-raw*
-<<<<<<< HEAD
+models/lm/
+
+# Installers and large binaries
+Miniconda3*.sh
 26W_ECE147_247_FinalProject.pdf
-=======
->>>>>>> 308ab0a (SH)

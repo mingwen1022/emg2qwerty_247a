@@ -1,6 +1,0 @@
-Final test metrics (single run)
-  test/CER: 37.00021743774414
-  test/DER: 0.7780418992042542
-  test/IER: 14.7179594039917
-  test/SER: 21.504215240478516
-  test/loss: 1.1838957071304321

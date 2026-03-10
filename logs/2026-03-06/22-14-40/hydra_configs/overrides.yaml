@@ -1,3 +1,0 @@
-- train=False
-- checkpoint=/home/ming/emg2qwerty/logs/2026-03-06/02-50-55/job0_/checkpoints/epoch37-step3040.ckpt
-- decoder=ctc_beam
