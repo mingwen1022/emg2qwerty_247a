@@ -1,16 +1,9 @@
-<<<<<<< HEAD
 # Base config: TDS (Temporal Depthwise-Separable) Conv CTC baseline.
 # Override with model=transformer_ctc, model=gru, etc. for other architectures.
 defaults:
   - user: single_user
   - transforms: log_spectrogram
   - model: tds_conv_ctc
-=======
-defaults:
-  - user: single_user
-  - transforms: log_spectrogram
-  - model: transformer_ctc
->>>>>>> 308ab0a (SH)
   - optimizer: adam
   - lr_scheduler: linear_warmup_cosine_annealing
   - decoder: ctc_greedy

@@ -170,7 +170,6 @@ class MultiBandRotationInvariantMLP(nn.Module):
         return torch.stack(outputs_per_band, dim=self.stack_dim)
 
 
-<<<<<<< HEAD
 class VanillaRNNEncoder(nn.Module):
     """A vanilla RNN encoder over time for input tensors of shape (T, N, C).
 
@@ -375,8 +374,6 @@ class RawEMGCNNEncoder(nn.Module):
         return lengths
 
 
-=======
->>>>>>> 308ab0a (SH)
 class TDSConv2dBlock(nn.Module):
     """A 2D temporal convolution block as per "Sequence-to-Sequence Speech
     Recognition with Time-Depth Separable Convolutions, Hannun et al"
@@ -465,7 +462,6 @@ class TDSFullyConnectedBlock(nn.Module):
         return self.layer_norm(x)  # TNC
 
 
-<<<<<<< HEAD
 class TwoLayerFCBlock(nn.Module):
     """Two-layer FC with residual and LayerNorm (TDS-style)."""
 
@@ -482,8 +478,6 @@ class TwoLayerFCBlock(nn.Module):
         return self.norm(x + self.fc(x))
 
 
-=======
->>>>>>> 308ab0a (SH)
 class TDSConvEncoder(nn.Module):
     """A time depth-separable convolutional encoder composing a sequence
     of `TDSConv2dBlock` and `TDSFullyConnectedBlock` as per

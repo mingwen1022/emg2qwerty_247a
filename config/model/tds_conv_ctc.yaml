@@ -1,11 +1,7 @@
 # @package _global_
-<<<<<<< HEAD
 # TDS (Temporal Depthwise-Separable) Conv CTC. Log spectrogram input.
 # For channel ablation: override electrode_channels and set in_features = 33 * electrode_channels
-=======
-# For channel ablation: override electrode_channels and set in_features = 33 * electrode_channels
 # (33 = n_fft//2 + 1 from log_spectrogram)
->>>>>>> 308ab0a (SH)
 module:
   _target_: emg2qwerty.lightning.TDSConvCTCModule
   in_features: 528  # freq_bins * electrode_channels = 33 * 16
@@ -17,8 +13,4 @@ module:
 datamodule:
   _target_: emg2qwerty.lightning.WindowedEMGDataModule
   window_length: 8000  # 4 sec windows for 2kHz EMG
-<<<<<<< HEAD
-  # stride: null  # optional; null means stride=window_length (no overlap)
-=======
->>>>>>> 308ab0a (SH)
   padding: [1800, 200]  # 900ms past context, 100ms future context

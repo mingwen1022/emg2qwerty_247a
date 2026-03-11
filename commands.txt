@@ -1,0 +1,15 @@
+# All 4 ablation types (16 runs total)
+nohup python scripts/run_ablations.py ablation=all trainer.max_epochs=40 trainer.accelerator=gpu > ablation.log 2>&1 &
+
+# Single ablation type
+nohup python scripts/run_ablations.py ablation=preprocessing trainer.max_epochs=40 trainer.accelerator=gpu > ablation.log 2>&1 &
+nohup python scripts/run_ablations.py ablation=channels trainer.max_epochs=40 trainer.accelerator=gpu > ablation.log 2>&1 &
+nohup python scripts/run_ablations.py ablation=data_amount trainer.max_epochs=40 trainer.accelerator=gpu > ablation.log 2>&1 &
+nohup python scripts/run_ablations.py ablation=sampling_rate trainer.max_epochs=40 trainer.accelerator=gpu > ablation.log 2>&1 &
+
+# To print the results
+python scripts/collect_ablation_results.py
+
+# To check progress 
+grep -c 'Trainer.fit.*stopped.*max_epochs=40.*reached' ablation.log
+ls logs/2026-03-04/ | wc -l

@@ -121,8 +121,6 @@ class RandomBandRotation:
 
 
 @dataclass
-<<<<<<< HEAD
-=======
 class SelectChannels:
     """Select first N electrode channels per band, for ablation studies on
     channel count vs CER. Input shape: (T, bands, C) or (T, bands, C, freq).
@@ -178,7 +176,6 @@ class GaussianNoise:
 
 
 @dataclass
->>>>>>> 308ab0a (SH)
 class TemporalAlignmentJitter:
     """Applies a temporal jittering augmentation that randomly jitters the
     alignment of left and right EMG data by up to ``max_offset`` timesteps.

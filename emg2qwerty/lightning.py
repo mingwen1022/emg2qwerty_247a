@@ -23,7 +23,6 @@ from emg2qwerty.data import LabelData, WindowedEMGDataset
 from emg2qwerty.metrics import CharacterErrorRates
 from emg2qwerty.modules import (
     CNNTransformerEncoder,
-<<<<<<< HEAD
     GRUEncoder,
     MultiBandRotationInvariantMLP,
     RawEMGCNNEncoder,
@@ -33,12 +32,6 @@ from emg2qwerty.modules import (
     TransformerEncoderStack,
     TwoLayerFCBlock,
     VanillaRNNEncoder,
-=======
-    MultiBandRotationInvariantMLP,
-    SpectrogramNorm,
-    TDSConvEncoder,
-    TransformerEncoderStack,
->>>>>>> 308ab0a (SH)
 )
 from emg2qwerty.transforms import Transform
 
@@ -56,19 +49,13 @@ class WindowedEMGDataModule(pl.LightningDataModule):
         train_transform: Transform[np.ndarray, torch.Tensor],
         val_transform: Transform[np.ndarray, torch.Tensor],
         test_transform: Transform[np.ndarray, torch.Tensor],
-<<<<<<< HEAD
         stride: int | None = None,
-=======
->>>>>>> 308ab0a (SH)
         test_window_length: int | None = None,
     ) -> None:
         super().__init__()
 
         self.window_length = window_length
-<<<<<<< HEAD
         self.stride = stride
-=======
->>>>>>> 308ab0a (SH)
         self.padding = padding
 
         self.batch_size = batch_size
@@ -81,10 +68,7 @@ class WindowedEMGDataModule(pl.LightningDataModule):
         self.train_transform = train_transform
         self.val_transform = val_transform
         self.test_transform = test_transform
-<<<<<<< HEAD
-=======
 
->>>>>>> 308ab0a (SH)
         # If None, feed entire sessions at test (original behavior). If set (e.g.
         # to window_length), use windowed test for fair comparison with val.
         # Transformers require windowed test since they're trained on short seqs.
@@ -97,10 +81,7 @@ class WindowedEMGDataModule(pl.LightningDataModule):
                     hdf5_path,
                     transform=self.train_transform,
                     window_length=self.window_length,
-<<<<<<< HEAD
                     stride=self.stride,
-=======
->>>>>>> 308ab0a (SH)
                     padding=self.padding,
                     jitter=True,
                 )
@@ -113,10 +94,7 @@ class WindowedEMGDataModule(pl.LightningDataModule):
                     hdf5_path,
                     transform=self.val_transform,
                     window_length=self.window_length,
-<<<<<<< HEAD
                     stride=self.stride,
-=======
->>>>>>> 308ab0a (SH)
                     padding=self.padding,
                     jitter=False,
                 )
@@ -192,15 +170,11 @@ class TDSConvCTCModule(pl.LightningModule):
     ) -> None:
         super().__init__()
         self.electrode_channels = electrode_channels or self.ELECTRODE_CHANNELS
-<<<<<<< HEAD
         self.save_hyperparameters(
             ignore=["optimizer", "lr_scheduler", "decoder", "mlp_features", "block_channels"]
         )
         self._optimizer_config = optimizer
         self._lr_scheduler_config = lr_scheduler
-=======
-        self.save_hyperparameters()
->>>>>>> 308ab0a (SH)
 
         num_features = self.NUM_BANDS * mlp_features[-1]
 
@@ -313,13 +287,8 @@ class TDSConvCTCModule(pl.LightningModule):
     def configure_optimizers(self) -> dict[str, Any]:
         return utils.instantiate_optimizer_and_scheduler(
             self.parameters(),
-<<<<<<< HEAD
             optimizer_config=self._optimizer_config,
             lr_scheduler_config=self._lr_scheduler_config,
-=======
-            optimizer_config=self.hparams.optimizer,
-            lr_scheduler_config=self.hparams.lr_scheduler,
->>>>>>> 308ab0a (SH)
         )
 
 
@@ -464,7 +433,6 @@ class TransformerCTCModule(pl.LightningModule):
         )
 
 
-<<<<<<< HEAD
 class RNNCTCModule(pl.LightningModule):
     """Vanilla RNN encoder + CTC. Uses same frontend as TDS, replaces conv with RNN."""
 
@@ -596,8 +564,6 @@ class RNNCTCModule(pl.LightningModule):
         )
 
 
-=======
->>>>>>> 308ab0a (SH)
 class CNNTransformerCTCModule(pl.LightningModule):
     """CNN + Transformer hybrid + CTC for EMG-to-text. Uses the same frontend as
     TDSConvCTCModule and TransformerCTCModule. Stacks length-preserving CNN blocks
@@ -739,7 +705,6 @@ class CNNTransformerCTCModule(pl.LightningModule):
             optimizer_config=self.hparams.optimizer,
             lr_scheduler_config=self.hparams.lr_scheduler,
         )
-<<<<<<< HEAD
 
 
 class GRUCTCModule(pl.LightningModule):
@@ -1365,5 +1330,3 @@ class CGRUCTCModule(pl.LightningModule):
             optimizer_config=self._optimizer_config,
             lr_scheduler_config=self._lr_scheduler_config,
         )
-=======
->>>>>>> 308ab0a (SH)
