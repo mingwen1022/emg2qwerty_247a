@@ -1,5 +1,5 @@
-# CNN model (TDS Conv backbone). Log spectrogram input.
 # @package _global_
+# CNN model (TDS Conv backbone). Log spectrogram input.
 module:
   _target_: emg2qwerty.lightning.TDSConvCTCModule
   in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16

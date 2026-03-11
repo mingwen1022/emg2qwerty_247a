@@ -1,5 +1,5 @@
-# CRNN: Convolutional Recurrent Neural Network (CNN + RNN) with CTC. Log spectrogram input.
 # @package _global_
+# CRNN: Convolutional Recurrent Neural Network (CNN + RNN) with CTC. Log spectrogram input.
 module:
   _target_: emg2qwerty.lightning.CRNNCTCModule
   in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16

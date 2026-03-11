@@ -1,5 +1,5 @@
-# Raw CNN+GRU with CTC. Raw EMG input (no spectrogram).
 # @package _global_
+# Raw CNN+GRU with CTC. Raw EMG input (no spectrogram).
 module:
   _target_: emg2qwerty.lightning.RawCnnGruCtcModule
   # cnn_channels: [64, 128, 192]
