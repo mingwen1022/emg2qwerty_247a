@@ -1,5 +1,5 @@
-# Raw tensor transform: no spectrogram. Stacks emg_left and emg_right as-is for raw EMG models.
 # @package _global_
+# Raw tensor transform: no spectrogram. Stacks emg_left and emg_right as-is for raw EMG models.
 to_tensor:
   _target_: emg2qwerty.transforms.ToTensor
   fields: [emg_left, emg_right]
