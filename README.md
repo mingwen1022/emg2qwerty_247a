@@ -1,7 +1,6 @@
 # EC ENGR C247A — EMG Keystroke Recognition
 
-**Branch:** `merge-group` (team integration branch)
-**Goal:** Replace TDSConv baseline encoder with BiLSTM/BiGRU variants and beat the baseline CER.
+**Team:** Haneol Choi, Ming Wen, Jake Engelberg, Shu Han Ho
 
 **Best result:** BiGRU (dropout=0.5, no SpecAugment) + beam search (beam=50, 6-gram LM) — **test CER 6.81%**
 
@@ -171,11 +170,10 @@ Channels [96,192,256], win=20000, stride=12000, pad=[900,200].
 
 | File | Description |
 |------|-------------|
-| `LSTM_work.md` | Full experiment log with analysis and insights (Han) |
 | `emg2qwerty/lightning.py` | All module classes (LSTMCTCModule, GRUCTCModule, ConvLSTMConvCTCModule, etc.) |
 | `emg2qwerty/modules.py` | LSTMEncoder, BiGRUEncoder, ConvBlock, ChannelSlice |
 | `config/model/lstm_ctc.yaml` | BiLSTM config (h=384, l=2) |
 | `config/model/gru_ctc.yaml` | BiGRU config (h=384, l=2) |
 | `config/model/conv_lstm_conv_ctc.yaml` | Conv+BiLSTM+Conv config |
-| `config/model/cgru_ctc.yaml` | CNN+GRU config (Ming) |
-| `config/model/raw_cnn_gru_ctc.yaml` | Raw-CNN+BiGRU config (Ming) |
+| `config/model/cgru_ctc.yaml` | CNN+GRU config |
+| `config/model/raw_cnn_gru_ctc.yaml` | Raw-CNN+BiGRU config |
