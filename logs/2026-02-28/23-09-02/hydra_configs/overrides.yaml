@@ -1,0 +1,3 @@
+- model=lstm_ctc
+- module.hidden_size=512
+- module.num_layers=3

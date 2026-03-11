@@ -1,0 +1,3 @@
+- model=lstm_ctc
+- transforms=log_spectrogram_hop24
+- trainer.max_epochs=40

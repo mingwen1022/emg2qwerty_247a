@@ -1,0 +1,2 @@
+- model=tds_lstm_ctc
+- trainer.max_epochs=1

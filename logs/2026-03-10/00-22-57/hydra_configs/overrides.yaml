@@ -1,0 +1,2 @@
+- model=gru_ctc
+- trainer.max_epochs=40

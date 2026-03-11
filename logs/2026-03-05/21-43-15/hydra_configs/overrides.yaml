@@ -1,0 +1,8 @@
+- model=gru_ctc
+- transforms=log_spectrogram_hop48
+- datamodule.window_length=16000
+- datamodule.padding=[900,100]
+- decoder=ctc_beam
+- decoder.beam_size=10
+- checkpoint='logs/2026-03-05/19-00-55/checkpoints/epoch=136-step=8220.ckpt'
+- train=false

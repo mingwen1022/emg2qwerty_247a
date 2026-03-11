@@ -1,0 +1,7 @@
+- model=gru_ctc
+- transforms=log_spectrogram_hop48
+- datamodule.window_length=16000
+- datamodule.padding=[900,100]
+- trainer.max_epochs=40
+- +trainer.gradient_clip_val=1.0
+- module.dropout=0.1

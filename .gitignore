@@ -66,3 +66,8 @@ models/lm/
 # Installers and large binaries
 Miniconda3*.sh
 26W_ECE147_247_FinalProject.pdf
+
+# Personal notes
+understand_baseline.md
+understand_baseline_en.md
+CLAUDE.md

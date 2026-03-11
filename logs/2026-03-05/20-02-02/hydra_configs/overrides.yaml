@@ -1,0 +1,6 @@
+- model=lstm_ctc
+- transforms=log_spectrogram_hop48
+- trainer.max_epochs=40
+- +trainer.gradient_clip_val=1.0
+- model=conv_gru_conv_ctc
+- trainer.max_epochs=150

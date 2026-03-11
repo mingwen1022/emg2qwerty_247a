@@ -694,3 +694,86 @@ class TransformerEncoderStack(nn.Module):
             T, N = x.shape[0], x.shape[1]
             key_padding_mask = torch.arange(T, device=x.device)[None, :] >= input_lengths[:, None]
         return self.transformer(x, src_key_padding_mask=key_padding_mask)
+
+
+class ChannelSlice(nn.Module):
+    """Selects the first ``num_channels`` electrode channels from each band.
+
+    Inputs must be of shape (T, N, num_bands, electrode_channels, freq).
+    Used for channel ablation studies.
+    """
+
+    def __init__(self, num_channels: int) -> None:
+        super().__init__()
+        self.num_channels = num_channels
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x: (T, N, bands, channels, freq)
+        return x[:, :, :, : self.num_channels, :]
+
+
+class LSTMEncoder(nn.Module):
+    def __init__(self, num_features, hidden_size, num_layers, dropout):
+        super().__init__()
+        self.lstm = nn.LSTM(
+            input_size=num_features,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            bidirectional=True,
+            dropout=dropout,
+            batch_first=False,  # TNC format
+        )
+        self.fc = nn.Linear(hidden_size * 2, num_features)
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        x, _ = self.lstm(inputs)  # (T, N, hidden_size * 2)
+        return self.fc(x)         # (T, N, num_features)
+
+
+class BiGRUEncoder(nn.Module):
+    """BiGRU encoder with internal FC projection. Interface: num_features, hidden_size,
+    num_layers, dropout. Output has same shape as input (T, N, num_features)."""
+
+    def __init__(self, num_features, hidden_size, num_layers, dropout):
+        super().__init__()
+        self.gru = nn.GRU(
+            input_size=num_features,
+            hidden_size=hidden_size,
+            num_layers=num_layers,
+            bidirectional=True,
+            dropout=dropout,
+            batch_first=False,  # TNC format
+        )
+        self.fc = nn.Linear(hidden_size * 2, num_features)
+
+    def forward(self, inputs: torch.Tensor) -> torch.Tensor:
+        x, _ = self.gru(inputs)  # (T, N, hidden_size * 2)
+        return self.fc(x)        # (T, N, num_features)
+
+
+class ConvBlock(nn.Module):
+    """Depthwise + pointwise conv block with pre-norm and residual.
+
+    Captures local temporal patterns with a wide depthwise conv (per-channel)
+    followed by a pointwise conv (cross-channel mixing). Operates on TNC tensors.
+    """
+
+    def __init__(self, num_features: int, kernel_size: int) -> None:
+        super().__init__()
+        self.norm = nn.LayerNorm(num_features)
+        self.dw_conv = nn.Conv1d(
+            num_features, num_features, kernel_size,
+            padding=kernel_size // 2, groups=num_features,
+        )
+        self.pw_conv = nn.Conv1d(num_features, num_features, 1)
+        self.act = nn.GELU()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x: (T, N, C)
+        residual = x
+        x = self.norm(x)
+        x = x.permute(1, 2, 0)        # (N, C, T)
+        x = self.act(self.dw_conv(x))
+        x = self.pw_conv(x)
+        x = x.permute(2, 0, 1)        # (T, N, C)
+        return x + residual

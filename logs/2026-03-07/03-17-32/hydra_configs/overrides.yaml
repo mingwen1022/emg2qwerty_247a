@@ -1,0 +1,8 @@
+- model=gru_ctc
+- transforms=hop48_no_specaug
+- datamodule.window_length=16000
+- datamodule.padding=[900,100]
+- decoder=ctc_beam
+- train=false
+- module.dropout=0.5
+- checkpoint='logs/2026-03-07/01-33-54/checkpoints/epoch=149-step=9000.ckpt'

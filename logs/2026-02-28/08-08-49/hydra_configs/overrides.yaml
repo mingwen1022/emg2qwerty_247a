@@ -1,0 +1,2 @@
+- model=tds_lstm_ctc
+- checkpoint=logs/2026-02-28/04-59-33/checkpoints/last.ckpt

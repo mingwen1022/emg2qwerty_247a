@@ -1,0 +1,3 @@
+- model=lstm_ctc
+- user=single_user_2ses
+- trainer.max_epochs=40

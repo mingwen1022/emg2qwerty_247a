@@ -1,0 +1,2 @@
+- model=conv_lstm_conv_ctc
+- trainer.max_epochs=40

@@ -1,0 +1,3 @@
+- model=lstm_ctc
+- module.num_layers=3
+- trainer.max_epochs=1

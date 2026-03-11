@@ -1,0 +1,6 @@
+- model=conv_lstm_conv_ctc
+- transforms=log_spectrogram_hop48
+- datamodule.window_length=16000
+- datamodule.padding=[900,100]
+- trainer.max_epochs=150
+- +trainer.gradient_clip_val=1.0

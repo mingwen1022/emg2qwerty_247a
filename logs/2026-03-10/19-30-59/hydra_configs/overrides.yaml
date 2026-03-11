@@ -1,0 +1,4 @@
+- model=conv_gru_conv_ctc
+- trainer.max_epochs=150
+- datamodule.window_length=8000
+- datamodule.padding=[1800,200]
