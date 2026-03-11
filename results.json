@@ -1,0 +1,21 @@
+{
+  "val_metrics": [
+    {
+      "val/loss": 103.59468841552734,
+      "val/CER": 886.423583984375,
+      "val/IER": 0.011082787998020649,
+      "val/DER": 805.4527587890625,
+      "val/SER": 80.95977020263672
+    }
+  ],
+  "test_metrics": [
+    {
+      "test/loss": 117.09571838378906,
+      "test/CER": 1029.13330078125,
+      "test/IER": 0.0,
+      "test/DER": 948.476318359375,
+      "test/SER": 80.65701293945312
+    }
+  ],
+  "best_checkpoint": "/home/hanchoi/247A/logs/2026-03-11/03-42-47/checkpoints/epoch=0-step=160.ckpt"
+}

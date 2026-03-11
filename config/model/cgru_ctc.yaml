@@ -1,5 +1,5 @@
-# CGRU: CNN + GRU hybrid with CTC. Log spectrogram input.
 # @package _global_
+# CGRU: CNN + GRU hybrid with CTC. Log spectrogram input.
 module:
   _target_: emg2qwerty.lightning.CGRUCTCModule
   in_features: 528  # freq * channels = (n_fft // 2 + 1) * 16
