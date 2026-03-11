@@ -71,3 +71,12 @@ Miniconda3*.sh
 understand_baseline.md
 understand_baseline_en.md
 CLAUDE.md
+
+# Personal/local files
+CS247A_Report.pdf
+LSTM_work.md
+run_pending.sh
+pending_experiment.log
+commands.txt
+results.json
+FETCH_HEAD
