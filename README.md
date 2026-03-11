@@ -8,7 +8,7 @@
 
 ## Paper Experiment → Log Directory Mapping
 
-Logs under `logs/<date>/<time>/`. Rows marked `—` are team member runs not available locally.
+Logs under `logs/<date>/<time>/`. Ming's cluster runs have a `job0_/` subdirectory.
 
 ---
 
@@ -17,8 +17,8 @@ Logs under `logs/<date>/<time>/`. Rows marked `—` are team member runs not ava
 | Architecture | Params | Val CER | Log Directory |
 |---|---|---|---|
 | TDS-CNN (k=32) | 5.3M | 22.55 | `logs/2026-02-27/16-29-13/` (ep38) |
-| BiRNN (h=512, l=3) | 5.0M | 51.66 | — |
-| CNN+BiRNN+2FC | 9.5M | 32.63 | — |
+| BiRNN (h=512, l=3) | 5.0M | 51.66 | `logs/2026-03-02/02-28-02-40epoch-rnn_3layer_512hid/job0_/` |
+| CNN+BiRNN+2FC | 9.5M | 32.63 | `logs/2026-03-02/04-05-05-40epoch-rnn-3layer-512hid-2fcl/job0_/` |
 | BiLSTM (h=384, l=2) | 8.2M | 19.87 | `logs/2026-03-01/18-24-33/` |
 | BiLSTM (h=512, l=3) | 19.1M | 17.88 | `logs/2026-02-28/18-52-31/` |
 | BiGRU (h=384, l=2) | 6.4M | 20.56 | `logs/2026-03-10/00-22-57/` |
@@ -36,8 +36,8 @@ Logs under `logs/<date>/<time>/`. Rows marked `—` are team member runs not ava
 | Architecture | Params | Val CER | Test CER | Log Directory |
 |---|---|---|---|---|
 | TDS-CNN baseline | 5.3M | 18.94 | 22.17 | `logs/2026-02-27/16-29-13/` |
-| BiRNN (h=512, l=5) | 8.1M | 45.70 | 37.00 | — |
-| CNN+BiRNN+2FC | 9.5M | 31.52 | 25.20 | — |
+| BiRNN (h=512, l=5) | 8.1M | 45.70 | 37.00 | `logs/2026-03-01/02-42-22-rnn-5layer-512hd-0.05dp/job0_/` |
+| CNN+BiRNN+2FC | 9.5M | 31.52 | 25.20 | `logs/2026-03-02/08-22-06-150epoch-crnn/job0_/` |
 | BiLSTM (h=384, l=2) | 8.2M | 14.55 | 15.76 | `logs/2026-02-28/00-52-40/` |
 | BiLSTM (h=512, l=3) | 19.1M | 15.91 | 22.80 | `logs/2026-02-28/23-09-02/` |
 | BiGRU (h=384, l=2) | 6.4M | 16.26 | 53.90 | `logs/2026-03-10/19-06-46/` |
@@ -134,8 +134,8 @@ BiGRU (hop=48, win=16000, pad=[900,100]).
 |---|---|---|---|---|
 | BiGRU, dropout=0.5, SpecAugment | 150-ep | 8.82 | 8.17 | `logs/2026-03-06/06-08-22/` |
 | **BiGRU, dropout=0.5, no SpecAugment** | **150-ep** | **7.33** | **6.81** | `logs/2026-03-07/03-17-15/` |
-| Raw-CNN+BiGRU, gru_dropout=0.0 | 100-ep | 6.63 | 7.24 | — |
-| Raw-CNN+BiGRU, gru_dropout=0.5 | 120-ep | 6.72 | 6.94 | — |
+| Raw-CNN+BiGRU, gru_dropout=0.0 | 100-ep | 6.63 | 7.24 | `logs/2026-03-07/00-41-13/` |
+| Raw-CNN+BiGRU, gru_dropout=0.5 | 120-ep | 6.72 | 6.94 | `logs/2026-03-07/02-19-52/` |
 
 ---
 
@@ -145,10 +145,10 @@ Channels [96,192,256], win=20000, stride=12000, pad=[900,200].
 
 | Configuration | Horizon | Val CER | Test CER | Log Directory |
 |---|---|---|---|---|
-| gru_dropout=0.0 | 40-ep | 10.64 | 12.60 | — |
-| gru_dropout=0.5 | 40-ep | 10.31 | 12.45 | — |
-| gru_dropout=0.0 | 100-ep | 10.01 | 12.62 | — |
-| **gru_dropout=0.5** | **120-ep** | **9.93** | **11.48** | — |
+| gru_dropout=0.0 | 40-ep | 10.64 | 12.60 | `logs/2026-03-06/22-56-37-best_dropout0_40epoch/job0_/` |
+| gru_dropout=0.5 | 40-ep | 10.31 | 12.45 | `logs/2026-03-07/01-15-00-best-0.5dropout-40epoch/job0_/` |
+| gru_dropout=0.0 | 100-ep | 10.01 | 12.62 | `logs/2026-03-07/00-02-13_best_0dropout_100epoch/job0_/` |
+| **gru_dropout=0.5** | **120-ep** | **9.93** | **11.48** | `logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/` |
 
 ---
 

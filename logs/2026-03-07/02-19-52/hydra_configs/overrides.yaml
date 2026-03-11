@@ -1,0 +1,3 @@
+- train=False
+- checkpoint=/home/ming/emg2qwerty/logs/2026-03-07/01-31-16-best-0.5dropout-120epoch/job0_/checkpoints/epoch117-step9440.ckpt
+- decoder=ctc_beam
